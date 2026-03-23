@@ -1,0 +1,126 @@
+#define COMMON 
+
+
+local int i=0;
+local int j=0;
+
+
+//7bit encoded
+typedef struct
+{
+    local int length = 0;
+    local int shift = 0;
+    do
+    {
+        if (shift >= 35) 
+        {
+            Warning("Corrupted 7bit string");
+            return -1;
+        }
+        unsigned byte b <hidden=true>;
+        length |= (b & 0x7F) << shift;
+        shift += 7;
+    }
+    while((b & 0x80) > 0);
+
+    if (length > 0)
+        char str[length];
+
+}
+STRING <optimize=false, read=STRINGRead>; 
+
+
+string STRINGRead(STRING &s)
+{
+    string str;
+    SPrintf(str, "%s ", s.str);
+    return str;
+}
+
+
+
+typedef struct {
+    float x;
+    float y;
+    float z;
+} VECT3;
+
+typedef struct {
+    int x;
+    int y;
+    int z;
+} INT3;
+
+
+typedef struct
+{
+    float m[16];
+}
+MATRIX;
+
+
+
+typedef struct {
+    byte r;
+    byte g;
+    byte b;
+    byte a;
+} COLOR;
+
+typedef struct {
+    ubyte r;
+    ubyte g;
+    ubyte b;
+} COLOR_NOALPHA<read=COLOR_NOALPHARead>;
+
+string COLOR_NOALPHARead(COLOR_NOALPHA &c)
+{
+    string str;
+    SPrintf(str, "%i %i %i", c.r, c.g, c.b);
+    return str;
+}
+
+
+
+
+
+
+
+//////////////////////////////////////////////// PACKED VECTORS
+typedef int VECTOR_12_8_12<read=VECTOR_12_8_12Read>;
+string VECTOR_12_8_12Read(VECTOR_12_8_12 v)
+{
+    string str;
+    int x = (v.t >> 20) & 4095 - 2048;
+    int y = (v.t >> 12) & 255;
+    int z = (v.t & 4095) - 2048;
+    SPrintf(str, "%i %i %i", x,y,z);
+    return str;
+}
+
+typedef uint VECTOR_11_10_11 <read=VECTOR_11_10_11Read>;
+string VECTOR_11_10_11Read(VECTOR_11_10_11 v)
+{
+    string str;
+    int x = (v >> 21) & 2047 - 1024;
+    int y = (v >> 11) & 1023;
+    int z = (v >> 00) & 2047 - 1024;
+    SPrintf( str, "%i %i %i", x,y,z);
+    return str;
+}
+
+typedef int64 VECTOR_18_18_18 <read=VECTOR_18_18_18Read>;
+string VECTOR_18_18_18Read(VECTOR_18_18_18 v)
+{
+    string str;
+    int x = (v >> 36) & 262143L - 131072;
+    int y = (v >> 18) & 262143L - 131072;
+    int z = (v >> 00) & 262143L - 131072;
+    SPrintf( str, "%i %i %i", x,y,z);
+    return str;
+}
+
+
+LittleEndian();
+Printf ("define globals\n");
+SetBackColor(cNone);

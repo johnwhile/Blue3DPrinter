@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF98C8D9-7887-41C4-9F49-6D1A29FE8D7B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Blue3DPrinter</RootNamespace>
+    <AssemblyName>Blue3DPrinter</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Blue3DPrinter.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlockMesh\BlockHideInstance.cs" />
+    <Compile Include="BlockMesh\BlockMesh.cs" />
+    <Compile Include="Blueprint\BlockObject.cs" />
+    <Compile Include="Blueprint\BlockCollection.cs" />
+    <Compile Include="Blueprint\BlockMapping.cs" />
+    <Compile Include="Blueprint\BlockStatistics.cs" />
+    <Compile Include="Blueprint\BlueprintMesh.cs" />
+    <Compile Include="Blue3DPrinter.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Blue3DPrinter.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Blue3DPrinterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Blue3DPrinterForm.Designer.cs">
+      <DependentUpon>Blue3DPrinterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Blueprint\Blueprint.cs" />
+    <Compile Include="Blueprint\BlueprintHeader.cs" />
+    <Compile Include="Blueprint\BlueprintPart.cs" />
+    <Compile Include="Blueprint\BlueprintProperties.cs" />
+    <Compile Include="Blueprint\BlueprintRest.cs" />
+    <Compile Include="Blueprint\BlueprintRotation.cs" />
+    <Compile Include="Blueprint\ColorPalette.cs" />
+    <Compile Include="Blueprint\PropertyValue.cs" />
+    <Compile Include="Utils\LogMsg.cs" />
+    <Compile Include="Utils\SceneGenerator.cs" />
+    <Compile Include="Blueprint\TempClasses.cs" />
+    <Compile Include="Blueprint\BlockDescription.cs" />
+    <Compile Include="Blueprint\BlockModel.cs" />
+    <Compile Include="Blueprint\BlocksConfig.cs" />
+    <Compile Include="Blueprint\BlueprintVoxelizer.cs" />
+    <Compile Include="Controls\ConverterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConverterControl.Designer.cs">
+      <DependentUpon>ConverterControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VoxelizerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VoxelizerControl.Designer.cs">
+      <DependentUpon>VoxelizerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\BlueprintExeption.cs" />
+    <Compile Include="Utils\Rasterization8x8.cs" />
+    <Compile Include="Utils\ModelResourceManager.cs" />
+    <Compile Include="SettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingForm.Designer.cs">
+      <DependentUpon>SettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Blue3DDebuggerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Blue3DDebuggerForm.Designer.cs">
+      <DependentUpon>Blue3DDebuggerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\EcfParser.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Utils\WavefrontExporter.cs" />
+    <EmbeddedResource Include="Blue3DPrinterForm.resx">
+      <DependentUpon>Blue3DPrinterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConverterControl.resx">
+      <DependentUpon>ConverterControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingForm.resx">
+      <DependentUpon>SettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Blue3DDebuggerForm.resx">
+      <DependentUpon>Blue3DDebuggerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VoxelizerControl.resx">
+      <DependentUpon>VoxelizerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="BlocksConfig.ecf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Blue3DPrinter.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Blue3DPrinter.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Shapes.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 e x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\commonlib\Common.csproj">
+      <Project>{7e655b04-5914-4f26-9947-81c20b41f049}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnityTool\UnityTool.csproj">
+      <Project>{1e33fe65-20f1-4e98-9cda-2d2dea624136}</Project>
+      <Name>UnityTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="FbxTool\FbxTool.csproj">
+      <Project>{4e805dad-a781-42e7-b450-58e5974e1a63}</Project>
+      <Name>FbxTool</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <Content Include="ManualFix.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)\$(SolutionName)\FbxTool\FbxSdk_vs2019_2020.2\$(PlatformName)\$(ConfigurationName)\libfbxsdk.dll" $(TargetDir)/Y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

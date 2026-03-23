@@ -1,0 +1,8 @@
+﻿<!--Some blocks appear to have a different pivot point than the game and there is no information in the files. So you need to add an offset manually-->
+<Blocks>
+  <CubeShape OffsetY ="-0.5"/>
+  <BlockId ID="1495" OffsetX ="-1.213"/>
+  <BlockId ID="1498" OffsetZ ="-4.1"/>
+  <BlockId ID="1510" OffsetX ="-5.266"/>
+  <BlockId ID="1695" OffsetX ="-1.7"/>
+</Blocks>

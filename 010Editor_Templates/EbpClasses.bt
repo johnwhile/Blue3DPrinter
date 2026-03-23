@@ -1,0 +1,83 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: Generic classes
+//------------------------------------------------
+
+#ifndef COMMON
+    #include "Common.bt"
+#endif 
+
+#define EBPCLASSES
+
+typedef enum <byte> 
+{ 
+    P_INT32 = 0,
+    P_STRING = 1,
+    P_BOOL = 2,
+    P_FLOAT = 3,
+    P_BYTE4 = 5
+
+} PROPTYPE;
+
+
+typedef struct
+{
+    PROPTYPE type;
+    STRING name;   
+    switch(type)
+	{
+        case P_INT32 : int value;   break;
+        case P_STRING: STRING value;break;
+        case P_BOOL  : byte value;  break;
+        case P_FLOAT : float value; break;
+        case P_BYTE4 : int value;   break;
+        default : Warning( "Unknown prop type. Template stopped." ); return -1;
+	}
+    
+} PROPERTY <optimize=false>;
+
+
+typedef struct
+{
+    byte subversion; //1
+    ushort count;
+    PROPERTY property[count];
+
+} PROPERTIES <optimize=false>;
+
+
+typedef struct
+{
+    VECTOR_12_8_12 key;
+    PROPERTIES collection;
+
+} PROPCOLLECTION <optimize=false>;
+
+
+typedef struct
+{
+    VECTOR_12_8_12 key;
+    int code;
+} LOCKCODE_32;
+
+typedef struct(int subversion)
+{
+    VECTOR_12_8_12 key;
+    ushort code;
+} LOCKCODE_16;
+
+typedef struct
+{
+    STRING key;
+    ushort count;
+    PROPERTIES signal[count];
+       
+} SIGNALRECEIVER <optimize=false>;

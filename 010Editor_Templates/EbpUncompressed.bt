@@ -1,0 +1,444 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 1.0
+//   Purpose: 
+//  Category: template can't be included
+// File Mask: 
+//  ID Bytes: 
+//   History: blueprint file, with uncompressed data
+//------------------------------------------------
+
+#ifndef COMMON
+    #include "Common.bt"
+#endif 
+
+#ifndef EBPCLASSES
+    #include "EbpClasses.bt"
+#endif
+
+#include "EbpHeader.bt"
+
+
+
+// Chunk method for instances values, chunk size = 8 (like byte size ??? of course !!)
+
+typedef struct{
+    int count;
+    
+    if (count > FileSize() -  FTell())
+        return -1;
+
+    if(count>0)
+        byte array[count] <format=binary>;
+
+} CHUNK8;
+
+
+
+byte GetChunkSolution(CHUNK8 &chunks, int i)
+{
+    if (chunks.count>0)
+    {
+        local int ic = i / 8;
+        local byte m_chunk = chunks.array[ic];
+        local int ii = i % 8;
+        return m_chunk & (1 << ii);
+    }
+    return 0;
+}
+
+
+typedef struct(int length){
+
+    SetBackColor(cDkGreen);
+    CHUNK8 chunks;
+    SetBackColor(cLtGreen); 
+    
+    for( i = 0; i < length; i++ )
+    {
+        if (GetChunkSolution(chunks,i))
+        {
+            ushort data;
+        }
+    } 
+
+} USHORT_TABLE <optimize=false>;
+
+
+typedef struct(int length){
+
+    SetBackColor(cDkRed);
+    CHUNK8 chunks;
+    SetBackColor(cLtRed); 
+    for( i = 0; i < length; i++ )
+    {   
+        if (GetChunkSolution(chunks,i))
+        {
+            int64 data;
+        }
+    } 
+} LONG_TABLE <optimize=false>;
+
+
+typedef uint BLOCKCAPTION <read=BLOCKCAPTIONRead>;
+string BLOCKCAPTIONRead(BLOCKCAPTION b )
+{
+    string str;
+    // block index
+    int i = b & 0x07ff; //0000 0111 1111 1111
+    // 24 Cube Combinations Rotations
+    int r = (b & 0xf800) >> 11;
+    // domain - not investigated yet
+    //int d = (b & 0xff0000) >> 16;
+    // children reference
+    int c = (b & 0x3E000000) >> 25;
+    // some relation with blockid over 2048
+    //byte s = (b & 0x80000000) >> 31;
+    byte s24 = (b >> 24) & 1;
+    byte s30 = (b >> 30) & 1;
+
+    if (s24>0)
+    {
+        i = i + 2048;
+    }
+
+    SPrintf( str, "id_%i r%i c%i (%i %i)", i,r,c,s24,s30);
+    return str;
+}
+
+typedef struct(int length){
+
+    SetBackColor(cDkBlue);
+    CHUNK8 chunks;
+    SetBackColor(cLtBlue); 
+    
+    for( i = 0; i < length; i++ )
+    {   
+        if (GetChunkSolution(chunks,i))
+        {
+            BLOCKCAPTION caption;
+        }
+    } 
+} BLOCK_TABLE <optimize=false>;
+
+
+
+typedef struct(int length){
+
+    SetBackColor(cDkBlue);
+    CHUNK8 chunks;
+    SetBackColor(cLtBlue); 
+    for( i = 0; i < length; i++ )
+    {   
+        if (GetChunkSolution(chunks,i))
+        {
+            int data;
+        }
+    } 
+} INT_TABLE <optimize=false>;
+
+typedef struct(int length){
+
+    SetBackColor(cDkBlue);
+    CHUNK8 chunks;
+    SetBackColor(cLtBlue); 
+    for( i = 0; i < length; i++ )
+    {   
+        if (GetChunkSolution(chunks,i))
+        {
+            byte data;
+        }
+    } 
+} BYTE_TABLE <optimize=false>;
+
+
+
+
+typedef uint COLORCAPTION <read=COLORCAPTIONRead>;
+
+string COLORCAPTIONRead(COLORCAPTION c )
+{
+    string str;
+    int c1 = c & 0x1F; c = c >> 5;
+    int c2 = c & 0x1F; c = c >> 5;
+    int c3 = c & 0x1F; c = c >> 5;
+    int c4 = c & 0x1F; c = c >> 5;
+    int c5 = c & 0x1F; c = c >> 5;
+    int c6 = c & 0x1F;
+
+    SPrintf( str, "%i %i %i %i %i %i", c1,c2,c3,c4,c5,c6);
+    return str;
+}
+
+
+
+
+
+typedef struct(int length){
+
+    SetBackColor(cLtGray);
+    CHUNK8 chunks;
+    SetBackColor(cWhite); 
+    for( i = 0; i < length; i++ )
+    {   
+        if (GetChunkSolution(chunks,i))
+        {
+            COLORCAPTION color;
+        }
+    } 
+} COLOR_TABLE <optimize=false>;
+
+
+
+typedef struct{
+    int key;
+    STRING value;
+} INTSTRINGPAIR;
+
+
+
+typedef struct{
+    int groupid1;
+    int groupid2;
+    byte doMirror;
+} GROUPIDMATCH;
+
+
+typedef struct
+{
+    byte subversion;
+    ushort count <hidden=true>;
+    
+    if (count>0)
+    {
+        GROUPIDMATCH table[count];
+    }
+    if (subversion > 1)
+    {
+       ushort keycount <hidden=true>;
+       if (keycount>0)
+       {
+            INTSTRINGPAIR collection[keycount];
+       }
+    }
+} GROUPIDMATCHTABLE <optimize=false>;
+
+
+
+
+typedef struct(int subversion)
+{
+    ushort ID;
+    signed byte offsetx;
+    signed byte offsety;
+    signed byte offsetz;
+    int Group;
+    byte Facing_enum;
+    
+    if (subversion > 1)
+    {
+        byte flag;
+//        if (subversion < 6)
+//            bOverlapping = flag > 0;
+//        else
+//            bOverlapping = flag & 1 > 0;
+//            bCopyAir = flag & 2 > 0;
+    }
+    
+} SNAPPOINT <optimize=false>;
+   
+
+
+typedef struct (int subversion)
+{
+    
+    STRING name;
+    if (subversion==0)
+    {
+        VECTOR_11_10_11 pos;
+        VECTOR_11_10_11 size;
+    }
+    else
+    {
+        VECTOR_18_18_18 pos;
+        VECTOR_11_10_11 size;
+        if (subversion>4)
+        {
+            byte RotateY;
+        }
+        byte bool; 
+        if (bool)
+        {
+            STRING path;
+            STRING filename;
+            if (subversion>2)
+            {
+                STRING origName;
+            }
+        }
+        ushort count;
+        if (count > 0)
+        {
+            SNAPPOINT snappoint(subversion)[count];
+        }       
+    }
+
+} PART <optimize=false>;
+
+
+typedef struct
+{
+    SetBackColor(cLtBlue);
+    Printf ("> Blueprint Parts\n");
+
+    local int subversion = 0;
+    
+    if (version > 29)
+    {
+        byte v;
+        subversion = v;
+    }
+    ushort count;
+    PART part(subversion)[count];
+    if (version > 30)
+    {
+        GROUPIDMATCHTABLE matchtable;
+    }
+
+} BLUEPRINTPARTS <optimize=false>;
+
+
+
+typedef struct (int length) {
+    
+    if (version <= 2)
+    {
+        INT3 Size;
+    }
+
+    Printf ("> block_table\n");
+    BLOCK_TABLE BlockNode(length);
+    Printf ("> param3\n"); 
+    USHORT_TABLE NodeContextParam3(length);
+
+    Printf ("> density\n");
+    SetBackColor(cLtGray);
+    signed byte IsConstDensity;
+    if (IsConstDensity)
+    {
+        // all density's values are equal
+        signed byte constDensity;
+    }
+    else
+    {
+       
+       byte Density[length]; 
+    }
+    
+    Printf ("> color_table\n");
+    COLOR_TABLE Color(length);
+    Printf ("> texture_table\n");
+    LONG_TABLE Texture(length);
+    Printf ("> texture_rot\n");
+    BYTE_TABLE TextureRot(length);
+    Printf ("> overlays\n");
+    INT_TABLE Overlays(length);
+    Printf ("> overlays_rot\n");
+    INT_TABLE OverlaysRot(length);
+    
+   
+    if (version > 10)
+    { 
+        Printf ("> tiles\n");
+        ushort tilescount <hidden=true>;
+        PROPCOLLECTION Tile[tilescount] <open=false>;
+    }
+
+
+    if (version > 11)
+    {
+        Printf ("> lock codes\n");
+        ushort lockcodecount <hidden=true>;
+        if (version > 24)
+        {
+            LOCKCODE_32 codes[lockcodecount];
+        }
+        else
+        {
+            LOCKCODE_16 codes[lockcodecount];
+        }
+    }
+
+    if (version >= 14)
+    {
+        Printf ("> signals\n");
+        ushort signalcount <hidden=true>;
+        if (version >= 17)
+        {
+            PROPERTIES Signal[signalcount];
+        }
+        else
+        {
+            return -1; //not necessary
+        }
+        Printf ("> signal receivers\n");
+        ushort receivercount <hidden=true>;
+        SIGNALRECEIVER receiver[receivercount];
+        
+    }
+
+    if (version >= 15)
+    {
+        Printf ("> logics\n");
+        ushort logicount <hidden=true>;
+        PROPERTIES logic[logicount];
+    }
+    
+    if (version > 15)
+    {
+        Printf ("> shortcut names\n");
+        ushort shortcutcount <hidden=true>;
+        STRING shortcut[shortcutcount];
+        
+        if (version < 17)   
+        {   
+            //not used by game but necessary for consistency
+            ushort notusednamecount <hidden=true>;
+            STRING notusedname[notusednamecount] <hidden=true>;
+        }
+    }
+    
+
+    BLUEPRINTPARTS blueprintParts; 
+    
+    SetBackColor(cLtGray);
+    //colorPalete
+    byte paleteCount;
+    byte colorCount;
+    COLOR_NOALPHA color[colorCount];
+    
+
+} BLOCKDATA <optimize=false>;
+
+
+//+-----------------------------------------------------------+//
+//|                         MAIN                              |//
+//+-----------------------------------------------------------+//
+LittleEndian();
+FSeek(0);
+HEADER header;
+
+// game version:
+// = 29 for 1.6.3 
+// = 30 for 1.10.0 
+local int version = header.version; 
+
+local int length = header.size.x * header.size.y * header.size.z;
+
+//length from header (size.x * size.y * size.z where size max is 250)
+BLOCKDATA BlockData(length);
+
+Printf ("SCRIPT_END = OK\n");

@@ -1,0 +1,330 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category:
+// File Mask: 
+//  ID Bytes: 
+//   History: Asset file format
+//------------------------------------------------
+
+#ifndef ASSET_COMMON
+    #include "AssetsCommon.bt"
+#endif
+#include "Mesh.bt"
+
+
+local int version = 0;
+local uint bit32 = 1 << 31;
+
+  /*-------------------------------------/
+ /              HEADER                  /
+/-------------------------------------*/
+typedef struct
+{
+    local int64 h_filesize;
+    local int64 h_metadata;
+    local int64 DataOffset;
+
+    uint h_metadata32;
+    uint h_filesize32;
+    VERSION h_version;
+    uint h_dataoffset32;
+
+    version = h_version;
+    
+
+    if (version >= 9)
+    {
+        byte bigEndian;
+        byte reserved[3];
+    }
+    else
+    {
+        FSeek(FileSize() - h_metadata32);
+        byte bigEndian;
+    }
+    if (version >= kLargeFilesSupport)
+    {
+        uint  h_metadata64;
+        int64 h_filesize64;
+        int64 h_dataoffset64;
+        int64 unknow;
+
+        h_filesize = h_filesize64;
+        DataOffset = h_dataoffset64;
+        h_metadata = h_metadata64;
+    }
+    else
+    {
+        h_filesize = h_filesize32;
+        DataOffset = h_dataoffset32;
+        h_metadata = h_metadata32;
+    }
+}
+HEADER <fgcolor=cWhite, bgcolor=cLtBlue, optimize=false>; 
+
+
+  /*-------------------------------------/
+ /               TREE                   /
+/-------------------------------------*/
+typedef struct
+{
+    ushort  m_Version;
+    byte    m_Level;
+    byte    m_TypeFlags;
+    uint    m_TypeStrOffset;
+    uint    m_NameStrOffset;
+    int     m_ByteSize ;
+    int     m_Index;
+    int     m_MetaFlag;
+    if (version >= 19) uint64 m_RefTypeHash;
+}
+ASSETTREENODE_BOB <fgcolor=cWhite, bgcolor=cDkGreen, optimize=false>;
+
+
+typedef struct
+{
+    if (version >= 12 || version == 10)
+    {
+        int nodecount;
+        int strbuffersize;
+        ASSETTREENODE_BOB nodes[nodecount];
+        byte strbuffer[strbuffersize];
+    }
+    else
+    {
+        return -1;
+    }
+}
+ASSETTREE <fgcolor=cWhite, bgcolor=cGreen, optimize=false>;
+
+  /*-------------------------------------/
+ /          SERIALIZED TYPE             /
+/-------------------------------------*/
+typedef struct(byte isRef, byte enableTree)
+{
+    CLASSID classID;
+    if (version >= 16) byte m_IsStrippedType;
+    if (version >= 17) short m_ScriptTypeIndex;
+    if (version >= 13)
+    {
+        if (isRef && m_ScriptTypeIndex>=0)
+        {
+            ubyte scriptID[16]; //Hash128
+        }
+        else if ((version < 16 && classID < 0) || (version >= 16 && classID == 114))
+        {
+            ubyte scriptID[16]; //Hash128
+        }
+        ubyte m_OldTypeHash[16]; //Hash128
+    }
+    if (enableTree)
+    {
+        ASSETTREE tree;
+
+        if (version >= 21)
+        {
+            if (isRef)
+            {
+                string m_KlassName;
+                string m_NameSpace;
+                string m_AsmName;
+            }
+            else
+            {
+                int arraycount;
+                if (arraycount) int m_TypeDependencies[arraycount];
+            }
+        }
+    }
+}
+ASSETTYPE <fgcolor=cWhite, bgcolor=cLtGreen, optimize=false>;
+
+  /*-------------------------------------/
+ /              OBJECT                  /
+/-------------------------------------*/
+
+typedef struct(byte bigidenable)
+{
+    local int64 ByteStart = 0;
+
+    if (bigidenable)
+    {
+        int64 m_PathID64;
+    }
+    else if (version < 14)
+    {
+        int32 m_PathID32;
+    }
+    else 
+    {
+        AlignPosition(4);
+        int64 m_PathID64;
+    }
+    if (version >= kLargeFilesSupport) 
+    {
+        int64 byteStart64;
+        ByteStart = byteStart64;
+    }
+    else 
+    {
+        uint32 byteStart32;
+        ByteStart = byteStart32;
+    }
+
+    uint ByteSize;
+    int  typeID;
+    
+    if (version < kRefactoredClassId) ushort classID;
+    if (version < kHasScriptTypeIndex) ushort isDestroyed;
+    if (version >= kHasScriptTypeIndex && version < kRefactorTypeData) short m_ScriptTypeIndex;
+    if (version == kSupportsStrippedObject || version == kRefactoredClassId) byte stripped;
+}
+ASSETOBJECTINFO <fgcolor=cWhite, bgcolor=cLtBlue, optimize=false>;
+
+
+
+typedef struct
+{
+    int localSerializedFileIndex;
+    if (version < 14) 
+    {
+        int localIdentifierInFile;
+    }
+    else
+    {
+        AlignPosition(4);
+        int64 localIdentifierInFile;
+    }
+}
+ASSETOBJECTSCRIPT <fgcolor=cWhite, bgcolor=cBlue, optimize=false>;
+
+typedef struct
+{
+    if (version >= 6) string tempEmpty;
+    if (version >= 5)
+    {
+        byte guid[16];
+        int  type;
+    }
+    string pathName;
+}
+FILEIDENTIFIER <fgcolor=cWhite, bgcolor=cDkBlue, optimize=false>;
+
+  /*-------------------------------------/
+ /               ASSET                  /
+/-------------------------------------*/
+
+typedef struct
+{
+    HEADER header;
+    
+    local byte b_enableTree = false;
+    local byte b_bigIDEnabled = 0;
+
+    if (header.bigEndian == 0) LittleEndian();
+    if (version >= 7)  string unityversion;
+    if (version >= 8)  BUILDTARGET targhetPlatform;
+    if (version >= 13) 
+    {
+        byte enableTree;
+        b_enableTree = enableTree;
+    }
+    ///////////////////////////////////// READ TYPES
+    int typecount;
+    ASSETTYPE types(false, b_enableTree)[typecount];
+    if (version >= 7 && version < 14) 
+    {   
+        int bigIDEnabled;
+        b_bigIDEnabled = bigIDEnabled;
+    }
+    ///////////////////////////////////// READ OBJECTS
+    int objectcount;
+    ASSETOBJECTINFO objects(b_bigIDEnabled)[objectcount];
+
+    if (version >= kHasScriptTypeIndex)
+    {
+        int scriptCount;
+        if (scriptCount>0) ASSETOBJECTSCRIPT scripts[scriptCount];
+    }
+    
+    int externalsCount;
+    if (externalsCount>0) FILEIDENTIFIER externals[externalsCount];
+
+    if (version >= kSupportsRefObject)
+    {
+        int refTypesCount;
+        if (refTypesCount>0) ASSETTYPE refTypes(true, b_enableTree)[refTypesCount];
+    }
+    if (version >= 5) string userInformation;
+
+}
+ASSETFILE <optimize=false>;
+
+
+
+typedef struct(int64 start, int64 size)
+{
+    FSeek(start);
+    byte rawdata[size];  
+}
+OBJECT <optimize=false>;
+
+
+//+-----------------------------------------------------------+//
+//|                         MAIN                              |//
+//+-----------------------------------------------------------+//
+BigEndian();
+
+ASSETFILE_CHECK check;
+FSeek(0);
+ASSETFILE file;
+FSeek(0);
+
+Printf ("Reading objects\n");
+
+local int64 o_pos;
+local int64 o_size;
+local CLASSID type;
+local int index;
+
+for (i=0; i< file.objectcount; i++)
+{
+    if (version < kRefactoredClassId)
+    {
+        type = file.objects[i].classID;
+    }
+    else
+    {
+        index = file.objects[i].typeID;
+        type = file.types[index].classID;
+    }
+    
+    //Printf("AssetObject %s\n", EnumToString(type));
+    
+    o_pos = file.objects[i].ByteStart + file.header.DataOffset;
+    o_size = file.objects[i].ByteSize;
+
+    if (i%2==0) 
+    {
+        SetColor(cWhite, cLtRed);
+    }
+    else
+    {
+        SetColor(cBlack, cWhite);
+    }
+
+    switch(type)
+    {
+        case Mesh: ASSET_MESH mesh(o_pos, o_size); break;
+        //default: OBJECT obj(o_pos, o_size); break;
+    }
+    
+}
+
+
+Printf ("END = OK\n");

@@ -1,0 +1,54 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category: template can't be included
+// File Mask: 
+//  ID Bytes: 
+//   History: pure blueprint file, with compressed data
+//------------------------------------------------
+
+#ifndef COMMON
+    #include "Common.bt"
+#endif 
+
+#include "EbpHeader.bt"
+
+
+typedef struct (uint version) {
+    SetBackColor(cLtGray);
+        
+    if (version > 22)
+    {
+        int CompressedLength;
+        byte zero; // 0
+        byte zero; //false
+
+        byte VectorTable[CompressedLength];
+
+        int length;
+        byte zero; // 0
+        byte zero; //false
+
+    }
+    else
+    {
+        char PK[2]; //pk
+        Warning( "not implemented" );
+		return -1;
+    }
+    
+
+} BPREST;
+
+//+-----------------------------------------------------------+//
+//|                         MAIN                              |//
+//+-----------------------------------------------------------+//
+LittleEndian();
+HEADER header;
+BPREST rest(header.version);
+SetBackColor(cNone);
+Printf ("SCRIPT_END = OK\n");

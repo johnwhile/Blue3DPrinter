@@ -1,0 +1,233 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category:
+// File Mask: 
+//  ID Bytes: 
+//   History: Mesh asset valid only for 2022.1.24f1
+//------------------------------------------------
+
+#ifndef ASSET_COMMON
+    #include "AssetsCommon.bt"
+#endif
+
+typedef enum <int> 
+{
+    kPrimitiveTriangles = 0,
+    kPrimitiveTriangleStrip = 1,
+    kPrimitiveQuads = 2,
+    kPrimitiveLines = 3,
+    kPrimitiveLineStrip = 4,
+    kPrimitivePoints = 5,
+}
+TOPOLOGY;
+
+
+
+
+typedef struct()
+{
+
+    uint firstbyte;
+    uint indexcount;
+    TOPOLOGY topology;
+    uint baseVertex;
+    uint firstvertex;
+    uint vertexcount;
+    AABB localAABB; //centered layout
+    
+
+}
+SUBMESH <fgcolor=cYellow, bgcolor=cLtRed, optimize=false>; 
+
+
+
+
+typedef struct()
+{
+    VECT3 vertex;
+    VECT3 normal;
+    VECT3 tangent;
+    uint index;
+}
+BLENDSHAPEVERTEX;
+
+
+typedef struct()
+{
+    uint firstVertex;
+    uint vertexCount;
+    byte hasNormals;
+    byte hasTangents;
+    AlignPosition(4);
+}
+MESHSHAPE <optimize=false>;
+
+typedef struct()
+{
+    ALIGNEDSTRING name;
+    uint nameHash;
+    int frameIndex;
+    int frameCount;
+}
+MESHSHAPECHN <optimize=false>;
+
+
+typedef struct()
+{
+    int vertexcount;
+    if (vertexcount>0) BLENDSHAPEVERTEX vertices[vertexcount];
+    int shapescount;
+    if (shapescount>0) MESHSHAPE shapes[shapescount];
+    int channelscount;
+    if (channelscount>0) MESHSHAPECHN channels[channelscount];
+    int size;
+    if (size>0) float fullWeights[size];
+}
+BLENDSHAPEDATA <optimize=false>;
+
+
+
+typedef struct()
+{
+    uint m_NumItems;
+    float m_Range;
+    float m_Start;
+    int size;
+    if (size>0) byte m_Data[size];
+    AlignPosition(4);
+    byte m_BitSize;
+    AlignPosition(4);
+}
+PACKEDFLOAT <optimize=false>;
+
+typedef struct()
+{
+    uint m_NumItems;
+    int size;
+    if (size>0) byte m_Data[size];
+    AlignPosition(4);
+    byte m_BitSize;
+    AlignPosition(4);
+}
+PACKEDINT <optimize=false>;
+
+typedef struct
+{
+    ubyte stream;
+    ubyte offset;
+    ubyte format;
+    ubyte dimension;
+}
+CHNINFO;
+
+
+typedef struct
+{
+    uint m_VertexCount;
+    int channelinfocount;
+    if (channelinfocount>0) CHNINFO chninfo[channelinfocount];
+    int size;
+    if (size>0) byte m_DataSize[size];
+    AlignPosition(4);
+}
+VERTEXDATA <optimize=false>;
+
+
+
+typedef struct()
+{
+    PACKEDFLOAT m_Vertices;
+    PACKEDFLOAT m_UV;
+    //PACKEDFLOAT m_BindPoses;
+    PACKEDFLOAT m_Normals;
+    PACKEDFLOAT m_Tangents;
+    PACKEDINT m_Weights;
+    PACKEDINT m_NormalSigns;
+    PACKEDINT m_TangentSigns;
+    PACKEDFLOAT m_FloatColors;
+    PACKEDINT m_BoneIndices;
+    PACKEDINT m_Triangles;
+    //PACKEDINT m_Colors;
+    uint m_UVInfo;
+}
+COMPRESSEDMESH <optimize=false>;
+
+
+
+typedef struct()
+{
+    uint64 offset;
+    uint size;
+    ALIGNEDSTRING path;
+}
+STREAMINGINFO <optimize=false>;
+
+typedef struct(int64 offset, int64 size)
+{
+    if (FTell() > offset + size)
+    {
+        Printf ("Asset object out of file\n");
+        return -1;
+    }
+    FSeek(offset);
+
+    ALIGNEDSTRING Name;
+    int submeshcount;
+    if (submeshcount>0) {SUBMESH submesh[submeshcount];}
+
+    BLENDSHAPEDATA shapes;
+
+    int bindposecount;
+    if (bindposecount>0) MATRIX m_BindPose[bindposecount];
+
+    int bonenamecount;
+    if (bonenamecount>0) uint m_BoneNameHashes[bonenamecount];   
+    uint m_RootBoneNameHash;
+
+    int bonescount;
+    if (bonescount>0) AABB m_BonesAABB[bonescount]; //minmax version
+    int variablebonecount;
+    if (variablebonecount>0) uint m_VariableBoneCountWeights[variablebonecount];
+
+    byte m_MeshCompression;
+    
+    byte m_IsReadable;
+    byte m_KeepVertices;
+    byte m_KeepIndices;
+    AlignPosition(4);
+    
+    int m_IndexFormat;
+    int m_IndexBufferSize; //byte size
+    
+    if (m_IndexFormat==0)
+    {
+        ushort m_IndexBuffer16[m_IndexBufferSize/2];
+    }
+    else
+    {
+        uint m_IndexBuffer32[m_IndexBufferSize/4];
+    }
+    AlignPosition(4);
+    VERTEXDATA vertexdata;
+    COMPRESSEDMESH compressed;
+    AABB m_LocalAABB;
+    
+    int m_MeshUsageFlags;
+    int m_CookingOptions;
+    int count1;
+    if (count1>0) byte m_BakedConvexCollisionMesh[count1];
+    int count2;
+    if (count2>0) byte m_BakedTriangleCollisionMesh[count1];
+    
+    float m_MeshMetrics0;
+    float m_MeshMetrics1;
+
+    STREAMINGINFO streaminginfo;
+
+}
+ASSET_MESH <fgcolor=cWhite, bgcolor=cLtRed, optimize=false>; 

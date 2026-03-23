@@ -1,0 +1,199 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category:
+// File Mask: 
+//  ID Bytes: 
+//   History: Bundle file format (for full reading require the full uncompressed version
+//------------------------------------------------
+
+// ATTENTION, unity assetbundle use BigEndian
+
+typedef enum <uint> 
+{ 
+    H_ABiEnd = 0x80,            //ArchiveBlocksInfoAtTheEnd
+    H_ABDiCombine = 0x40,       //ArchiveBlocksAndDirectoryInfoCombined
+    H_CompressionMask = 0x3F,   //ArchiveCompressionTypeMask
+    H_BlockCompressionMask = 0x3F, //H_StorageBlockCompressionTypeMask
+} HFLAG;
+
+typedef enum <uint> 
+{ 
+   H_None = 0,
+   H_LZMA = 1,
+   H_LZ4  = 2,
+   H_LZ4HC= 3, 
+} HCOMPRESS;
+
+typedef struct
+{
+    uint uncompressedSize;
+    uint compressedSize;
+    ushort flag;
+}
+BLOCK <fgcolor=cWhite, bgcolor=cLtRed>; 
+
+typedef struct
+{
+    int64 offset;
+    int64 size;
+    uint flag;
+    string path;
+}
+NODE <fgcolor=cWhite, bgcolor=cLtGreen, optimize=false>; 
+
+
+typedef struct(int size)
+{
+    Printf ("LZMA\n"); 
+    byte buffer[size]; 
+}
+LZMA <fgcolor=cWhite, bgcolor=cLtRed, optimize=false>; 
+
+typedef struct(int size)
+{
+    Printf ("LZ4\n"); 
+    byte buffer[size]; 
+}
+LZ4 <fgcolor=cWhite, bgcolor=cLtRed, optimize=false>; 
+
+typedef struct(int size)
+{
+    Printf ("LZ4HC\n"); 
+    byte buffer[size];  
+}
+LZ4HC <fgcolor=cWhite, bgcolor=cLtRed, optimize=false>; 
+
+typedef struct(int size)
+{
+    Printf ("NONE at %i\n", FTell()); 
+    byte buffer[size]; 
+}
+UNCOMPRESSED <fgcolor=cWhite, bgcolor=cLtRed, optimize=false>; 
+
+typedef struct
+{
+    //string is a null terminated string
+    string signature;
+    uint version;
+    string unityVersion;
+    string unityRevision;
+    int64 size;
+    uint compressedBlocksInfoSize;
+    uint uncompressedBlocksInfoSize;
+    HFLAG flags;
+}
+HEADER <fgcolor=cWhite, bgcolor=cLtBlue, optimize=false>; 
+
+
+void AlignPosition(int alignment)
+{
+    local int64 pos = FTell();
+    FSkip(alignment - (pos % alignment));
+}
+
+
+
+
+typedef struct
+{
+    HEADER header;
+    //AlignPosition(16);
+    byte alignment[16 - (FTell() % 16)] <fgcolor=cBlack, bgcolor=cBlack, hidden=true>;
+
+    local int compression_mode = header.flags & H_CompressionMask;
+    local int64 pos = FTell();
+    
+    if ((header.flags & H_ABiEnd) !=0)
+    {
+        Printf ("ArchiveBlocksInfoAtTheEnd\n");
+        FSeek(FileSize() - header.compressedBlocksInfoSize);
+    }
+    if ((header.flags & H_ABDiCombine) !=0)
+    {
+        Printf ("ArchiveBlocksAndDirectoryInfoCombined\n");
+        pos+= header.compressedBlocksInfoSize;
+    }
+
+  
+    switch(compression_mode)
+    {
+        case H_LZMA :
+            LZMA data(header.compressedBlocksInfoSize);
+            byte alignment2[16 - (FTell() % 16)] <fgcolor=cBlack, bgcolor=cBlack, hidden=true>;
+            break;
+
+        case H_LZ4 :
+            LZ4 data(header.compressedBlocksInfoSize);
+            byte alignment2[16 - (FTell() % 16)] <fgcolor=cBlack, bgcolor=cBlack, hidden=true>;
+            break;
+
+        case H_LZ4HC:
+            LZ4HC data(header.compressedBlocksInfoSize);
+            byte alignment2[16 - (FTell() % 16)] <fgcolor=cBlack, bgcolor=cBlack, hidden=true>;
+            break;  
+
+        default :
+            //block info uncompressed so it can be readed
+            Printf ("None\n");
+            byte hash[16];
+            int blockcount <hidden=true>;
+            BLOCK blockInfo[blockcount];
+            int nodecount <hidden=true>;
+            NODE directoryInfo[nodecount];
+
+            byte alignment2[16 - (FTell() % 16)] <fgcolor=cBlack, bgcolor=cBlack, hidden=false>;
+
+            Printf ("block count = %i\n", blockcount);
+            
+            local int blockcompression_mode;
+            local int size;
+
+            for( i = 0; i < blockcount; i++ )
+            {   
+                blockcompression_mode = blockInfo[i].flag & H_BlockCompressionMask;
+                size = blockInfo[i].compressedSize;
+                Printf ("blok%i size = %i ", i , size);
+                switch(blockcompression_mode)
+                {
+                    case H_LZMA :
+                        LZMA data(size);
+                        break;
+            
+                    case H_LZ4 :
+                        LZ4 data(size);
+                        break;
+            
+                    case H_LZ4HC:
+                        LZ4HC data(size);
+                        break;  
+            
+                    default :
+                        UNCOMPRESSED data(size);
+                        break;
+                 }
+            }
+            break;
+    }
+
+    
+    
+    FSeek(pos);
+
+}
+BUNDLEFILE;
+
+
+
+//+-----------------------------------------------------------+//
+//|                         MAIN                              |//
+//+-----------------------------------------------------------+//
+BigEndian();
+local int i = 0;
+FSeek(0);
+BUNDLEFILE file;
+Printf ("END = OK\n");

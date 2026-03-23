@@ -1,0 +1,282 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: johnwhile
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: Header part of blueprint file
+//------------------------------------------------
+
+#ifndef COMMON
+    #include "Common.bt"
+#endif 
+
+
+
+typedef enum <byte> { 
+    _STRING = 0,
+    _BOOL   = 1,
+    _INT    = 2,
+    _FLOAT  = 3,
+    _VECT3  = 4,
+    _LONG   = 5,  
+} BPPROPTYPE;
+
+
+typedef enum <int> {
+    AddDigoutBox = 1,
+    FlattenTerrain = 2,
+    GroundYOffset = 3,
+    RotationToFaceNorth = 4,
+    Powered = 5,
+    Rotation = 6,
+    GroupName = 7,
+    ChangedBuild = 8,
+    ChangedDate = 9,
+    CreatorPlayerName = 10,
+    CreatorPlayerId = 11,
+    ChangedPlayerName = 12,
+	ChangedPlayerId = 13,
+	CameraYOffset = 14, 
+	CameraZOffset = 15, 
+	DisplayName = 16, 
+	GroundYOffsetFloat = 17, 
+	PivotPoint = 18, 
+	KeepTopSoil = 19, 
+	RotationSensitivity = 20,
+	Tags = 21,
+} BPPROPERTIETYPE;
+
+typedef struct{
+    BPPROPERTIETYPE key;
+    byte zero[3]; //false, false, false
+    BPPROPTYPE type;
+
+    if (type > 5)
+    {
+       Warning( "Unknown prop type. Template stopped." );
+       return 0;
+    }
+    
+
+    switch(type)
+	{
+        case _STRING : STRING object; break;
+        case _BOOL   : byte object; string empty; break;
+        case _INT    : int object; string empty; break;
+        case _FLOAT  : float object; string empty; break;
+        case _VECT3  : VECT3 object; string empty; break;
+        case _LONG   : int64 object; string empty; break;
+	}
+
+} BPPROPERTIES <read=BPPROPERTIESRead>;
+
+
+
+string BPPROPERTIESRead(BPPROPERTIES &p )
+{
+    string str;
+    SPrintf( str, "%s", EnumToString(p.key));
+    return str;
+}
+
+
+//use BLOCKMAP2 instead
+typedef struct{
+    STRING key;
+    ushort index;
+} BLOCKMAP;
+
+typedef struct {
+    STRING key;
+    ushort index;
+} BLOCKMAP2 <read=BLOCKMAP2Read>;
+
+string BLOCKMAP2Read(BLOCKMAP2 &b)
+{
+    string str;
+    SPrintf( str, "%i\t%s", b.index, b.key.str);
+    return str;
+}
+
+
+
+typedef struct{
+    int index;
+    int value;
+} INT_INT;
+
+typedef struct{
+    short index;
+    int value;
+} SHORT_INT;
+
+
+
+
+typedef enum <byte> { 
+    UNKNOWN = 0,
+    AV = 1,
+    BA = 2,
+    SV = 4,
+    CV = 8,
+    HV = 16,
+} PREFABTYPE;
+
+
+typedef struct (uint version) {
+    int cntLights;
+    int cntDoors;
+    int cntBlockEntities;
+    int cntBlockModels;
+    int cntSolid;    
+    
+    if (version > 12)
+        int cntTriangles;
+    if (version > 17)
+        int cntTrianglesReal;
+    if (version > 23)
+    {
+        int cntTeleporters;
+        int cntSpawnPointsUnlocked;
+        int cntSpawnPointsLocked;
+    }
+    ushort count;
+    if (version <= 12)
+    {
+        INT_INT Distribution[count];
+    }
+    else
+    {
+        SHORT_INT Distribution[count];
+    }
+    
+    if (version >= 26)
+    {
+        if (version < 27)
+        {
+            float num2;
+            if (num2 == 4711.080078125)
+            {
+                byte num3;
+                float param1;
+                float ArtilleryDefenseValue;
+                float InfantryAttackValue;
+                float InfantryDefenseValue;
+            }
+            else
+            {
+                local float param1 = num2;
+                float ArtilleryDefenseValue;
+                local float InfantryAttackValue = 0;
+                local float InfantryDefenseValue = 0;
+            }
+        }
+        else
+        {
+            float param1;
+            float ArtilleryDefenseValue;
+            float InfantryAttackValue;
+            float InfantryDefenseValue;
+        }
+    }
+    
+    if (version > 28)
+    {
+        byte  bAdminCore;
+        byte  bKeepContainers;
+    }
+
+} BLOCK_STATISTICS;
+
+
+typedef struct(byte param) {
+
+    if (param <= 2)
+        INT3 vector3;
+    else
+        uint vector3compressed;
+    if (param > 1)
+        STRING str;   
+} FILE;
+
+
+typedef struct (byte param){
+    STRING str;
+    byte boolean;
+
+    local byte lockInstance = true;
+    local byte byteval = true;
+
+    if (param > 3) { byte _lockInstance; lockInstance = _lockInstance;}
+    if (param > 4) { byte _byteval; byteval = _byteval;}
+    
+    ushort count;
+    if (count>0)
+        FILE files(param)[count] <optimize=false>;
+    
+} FILEDITOR;
+
+
+typedef struct {
+    byte param;
+    ushort count;
+    if (count>0)
+        FILEDITOR fileditor(param)[count] <optimize=false>;
+} TREENODESET;
+
+typedef struct (uint version){
+    ushort num1; //1
+    ushort count;
+    BPPROPERTIES properties[count] <optimize=false>;
+    ushort num3; //0
+} BLUEPRINT_PROP;
+
+
+typedef struct {
+	uint check;
+	if (check != 2022986309)
+	{
+        Warning( "Unknown header tag. Template stopped." );
+		return -1;
+	}
+	uint version;
+	
+	if (version > 1)
+        PREFABTYPE prefabType;
+
+    if (version > 2)
+    {
+        SetBackColor(cLtRed);
+        INT3 size;
+        BLUEPRINT_PROP prop(version) <optimize=false>;
+     }
+    if (version > 3)
+    {
+        SetBackColor(cLtGreen);
+        BLOCK_STATISTICS stats(version) <optimize=false>;
+    }
+    if (version > 27)
+    {
+        SetBackColor(cGreen);
+        byte GetBlockMapID;
+        if (GetBlockMapID)
+        {
+            SetBackColor(cLtBlue);
+            byte num1;
+            int count;
+            BLOCKMAP2 BlockIdMapping[count] <optimize=false>;
+        }
+    }
+    if (version >= 9)
+    {
+        SetBackColor(cLtYellow);
+        TREENODESET BlockGroupInfo <optimize=false>;
+    }
+    SetBackColor(cNone);
+
+} HEADER;

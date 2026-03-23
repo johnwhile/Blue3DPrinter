@@ -1,0 +1,126 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Setting</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+html,body { 
+	/* Default Font */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+</style>
+
+</head>
+
+<body>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>Open the xml file <EM>Blue3DPrinter.exe.config 
+</EM>with notepad or any text editor.</span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>The root directory is always the folder of 
+<EM>Blue3DPrinter.exe</EM></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><STRONG><FONT size=4>Set string&nbsp;<span class=SpellE>for</span> "<span class=SpellE><EM>GameDirectory</EM></span>"</FONT> </STRONG></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>The location <span class=SpellE>of</span> <span class=SpellE>your</span> 
+game, <span class=SpellE>example</span> <span class=SpellE>for</span> me <span class=SpellE>it's</span>: <EM>"C:\Program <span class=SpellE>Files</span> (x86)\Steam\steamapps\common\Empyrion - <span 
+class=SpellE>Galactic</span> <span class=SpellE>Survival</span>"</EM>.<BR></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>The program requires some files to work, currently the only 
+file that it need is <EM>"BlockConfig.ecf"</EM>. If you want to use a custom 
+BlockConfig.ecf, put it in the program directory (where is Blue3DPrinter.exe), 
+the program give it the priority.</span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>        
+          
+     </span>&nbsp;</p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><STRONG><FONT size=4>Set string <span class=SpellE>for</span> "<span class=SpellE><EM>ModelsFolder</EM></span>"</FONT></STRONG></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>Set as <EM>"<span class=SpellE>ModelsFolder</span>"</EM>, it's the location <span 
+class=SpellE>of</span> my <span class=SpellE>modelStorage.data.</span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE>  <span class=SpellE>modelStorage.data:<BR></span>     
+              
+            
+</span></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE>This file contains 
+all the geometries exported from the bundle's asset files: <U>models</U> and 
+<U>shapes</U>.&nbsp;The bundle <U>models2</U>&nbsp;was been left out, contains the 
+decoration's blocks, in fact the debug output of the tool will report some red 
+messages for these missing block, they will be added in future releases. Since 
+opening and reading the assets took about 5 minutes I decided to create my file 
+storage to extract the geometries very fast     
+              
+            
+</span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE>     
+              
+            
+</span></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>WARNING: <span class=SpellE>if</span>  <span class=SpellE>you</span> <span class=SpellE>delete</span> <span class=SpellE>this</span> file the 
+<span class=SpellE>tool</span><span 
+class=SpellE       >ask</span><span class=SpellE >you </span>  <span class=SpellE>to</span> <span class=SpellE>rebuild</span>  it, <span class=SpellE>but</span> <span class=SpellE>it</span> take <span class=SpellE>about</span> 5min due <span class=SpellE>to</span> 
+<span class=SpellE>poor</span> performance <span class=SpellE>of</span>  <span class=SpellE>AssetStudio</span>  <span class=SpellE>library</span>.<BR></span></span></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>To read the assets I used the library: "AssetStudio.dll" from <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><A 
+href="https://github.com/Perfare/AssetStudio">https://github.com/Perfare/AssetStudio</A></span></span></span>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>. It can  <span class=SpellE>read</span>  <span class=SpellE>bundles</span>
+<span class=SpellE>files</span>,<span 
+class=SpellE       >it's</span><span class=SpellE>not</span> fast <span class=SpellE       >but</span>
+<span class=SpellE>it's</span><span 
+class=SpellE       >necessary</span><span class=SpellE>to</span> <span class=SpellE       > to extract 
+t</span>he 3D <span class=SpellE>geometries</span> and 
+<span class=SpellE>build</span> the<span 
+class=SpellE       >model</span>.</span></span></span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>Another solution could be the use of <A 
+href="https://github.com/nesrak1/AssetsTools.NET">https://github.com/nesrak1/AssetsTools.NET</A>. 
+I tried to use it, it's very fast but it's too 
+complicated.</span></span></span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'> 
+           
+</span></span></span></span>&nbsp;</p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>   <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><STRONG><FONT size=4>Set string <span class=SpellE>for</span> <EM> "<span class=SpellE> 
+<span class=SpellE>ModelsFolderFBX</span></span>"</EM></FONT></STRONG></span> 
+           
+</span></p></SPAN></SPAN></SPAN>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE> <span style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'> <o:p ></O:P></span></span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'> Set <span class=SpellE>as</span><EM> 
+"<span class=SpellE>ModelsFolderFBX</span>"</EM> the location 
+<span class=SpellE>of</span> <span class=SpellE>additional</span> asset's <span class=SpellE>fbx</span> file <span class=SpellE>to</span> <span class=SpellE>override</span> <span class=SpellE>those</span> are in <span class=SpellE>modelStorage.data</span> (<span class=SpellE>only</span> <span class=SpellE>for</span> <span class=SpellE>debug</span>), but it's not implemented yet.</span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><o:p></O:P></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><STRONG><FONT size=4>Set number <span class=SpellE>for</span> <EM> 
+"<span class=SpellE>HideFaceMethod</span>"</EM></FONT></STRONG></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>The game's engine optimizes and remove the invisible 
+triangles of the hull's blocks, i do the game... or at least it 
+should.</span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>0 = Don't <span class=SpellE>hide</span> <span class=SpellE>invisible</span> <span class=SpellE>faces</span> <span class=SpellE>from</span> <span class=SpellE>hull</span> block, <span class=SpellE>extract</span> <span class=SpellE>all</span> data. (for debug)<BR></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>1 = Fast <span class=SpellE>hide</span> <span class=SpellE>method</span> <span class=SpellE>that</span> <span class=SpellE>use</span> the <span class=SpellE>name</span> <span class=SpellE>of</span> 
+<span class=SpellE>mesh</span> (the game <span class=SpellE>store</span> a <span class=SpellE>prefix</span> inside <span class=SpellE>mesh</span> <span class=SpellE>name</span>)<BR></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'>2 = Slow <span class=SpellE>hide</span> <span class=SpellE>method</span> <span class=SpellE>but</span> <span class=SpellE>hide</span> <span class=SpellE>all</span> <span class=SpellE>possibles</span> <span class=SpellE>faces</span>, <span class=SpellE>like</span> <span class=SpellE>in-game</span></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'> <span class=SpellE></span></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><STRONG><FONT size=4> Set <span class=SpellE>number 
+for</span><EM> 
+"<span class=SpellE>MaxVerticesPerObject</span>"</EM></FONT></STRONG></span></p>
+<p class=MsoNormal><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'> The <span 
+class=SpellE>maximum</span> <span class=SpellE>vertices</span> <span class=SpellE>for</span> <span class=SpellE>each</span> block (0 = <span class=SpellE>no-limit</span>), all blocks with more vertices will be 
+omitted.<BR></span><span 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Arial","sans-serif"; mso-fareast-font-family: "Times New Roman"'><span class=SpellE>This</span> <span class=SpellE>is</span> 
+a <span class=SpellE>temporary</span> <span class=SpellE>solution</span> <span class=SpellE>because</span> some <span class=SpellE>objects</span> <span class=SpellE>contain</span> <span class=SpellE>thousands</span> <span class=SpellE>of</span> <span class=SpellE>vertices</span> and the file <span class=SpellE>size</span> <span class=SpellE>becomes</span> too <span class=SpellE>large. This is not a problem for the tool which is capable 
+of creating large files in some seconds, but if you try to convert a 
+capital&nbsp;ship class&nbsp;"Fps-Destroyer", your 3d graphics programs will suffer a lot.The 
+game's graphics engine instead uses different methods to reduce the number of vertices and be 
+able to render in realtime.</span></span></p></body>
+</html>
