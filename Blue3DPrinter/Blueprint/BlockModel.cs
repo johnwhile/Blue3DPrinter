@@ -142,7 +142,7 @@ namespace Blue3DPrinter
 
         private void ParseAndAddMesh(SceneNode node, bool sort, bool collapse)
         {
-            if (node.Element is Mesh geometry)
+            if (node.Element is TriMesh geometry)
             {
                 /*
                 //only for debugging purpose: if AssetTransform static method is called, use this method

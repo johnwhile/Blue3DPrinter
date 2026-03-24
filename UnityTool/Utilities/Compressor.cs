@@ -50,7 +50,7 @@ namespace UnityTool
 
         public static MemoryStream Encode(MemoryStream uncompressed, CompressionMode mode)
         {
-            Debugg.Print($"compression with {mode}");
+            Debugg.Info($"compression with {mode}");
 
             switch (mode)
             {

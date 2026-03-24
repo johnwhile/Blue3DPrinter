@@ -125,7 +125,7 @@ namespace UnityTool
                 Hash = new Hash128(reader);
 
                 var blockCount = reader.ReadInt32();
-                Debugg.Print($"reading {blockCount} blocks");
+                Debugg.Info($"reading {blockCount} blocks");
                 blocksInfo = new Block[blockCount];
                 for (int i = 0; i < blockCount; i++)
                 {
@@ -134,7 +134,7 @@ namespace UnityTool
                     //Debugg.Print($"block {i} " + BlocksInfo[i].ToString());
                 }
                 var nodesCount = reader.ReadInt32();
-                Debugg.Print($"reading {nodesCount} nodes");
+                Debugg.Info($"reading {nodesCount} nodes");
                 directoryInfo = new Node[nodesCount];
                 for (int i = 0; i < nodesCount; i++)
                 {

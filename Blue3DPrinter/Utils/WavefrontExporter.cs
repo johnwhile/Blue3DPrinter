@@ -54,7 +54,7 @@ namespace Blue3DPrinter
                         waveobj = file.Create(uniqueName);
                         waveobj.CommentName = blockname;
 
-                        var splitted = subMesh.ConvertToMesh();
+                        var splitted = mesh.ConvertToMesh(subMesh);
                         
                         //vertexOffset = waveobj.GetVertexIndexOffset();
 
@@ -157,7 +157,7 @@ namespace Blue3DPrinter
                     var subMesh = mesh.GetSubMesh(s, m);
                     if (subMesh == null) continue;
 
-                    var singleMesh = subMesh.ConvertToMesh();
+                    var singleMesh = mesh.ConvertToMesh(subMesh);
 
 
                     WaveObject waveobj = file.Create(subMesh.Name);

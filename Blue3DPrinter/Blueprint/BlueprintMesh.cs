@@ -14,7 +14,7 @@ namespace Blue3DPrinter
     [DebuggerDisplay("{Name}")]
     public class BlueprintMesh
     {
-        Mesh geometry;
+        TriMesh geometry;
 
         public string Name { get; set; }
 
@@ -47,7 +47,7 @@ namespace Blue3DPrinter
 
         }
 
-        public BlueprintMesh(Mesh geometry, Matrix4x4f worldtransform)
+        public BlueprintMesh(TriMesh geometry, Matrix4x4f worldtransform)
         {
             this.geometry = geometry;
             this.geometry.Transform = geometry.Transform * worldtransform;

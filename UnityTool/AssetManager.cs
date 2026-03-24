@@ -4,7 +4,7 @@ using System.Linq;
 using Common;
 using Common.Maths;
 
-using MyMesh = Common.Maths.Mesh;
+using MyMesh = Common.Maths.TriMesh;
 using MySubMesh = Common.Maths.SubMesh;
 
 namespace UnityTool
@@ -122,7 +122,7 @@ namespace UnityTool
                 //    if (!Renderer.Materials[i - firstSubMesh].TryGet(reader, out mat)) mat = null;
 
                 mysub.FirstVertex = (int)mesh.SubMeshes[i].firstVertex;
-                mysub.Indices = new AttributeIndex();
+                //mysub.Indices = new AttributeIndex();
 
                 for (int f = 0; f < numFaces; f++)
                 {
@@ -182,7 +182,7 @@ namespace UnityTool
                 //    if (!Renderer.Materials[i - firstSubMesh].TryGet(reader, out mat)) mat = null;
 
                 mysub.FirstVertex = (int)mesh.SubMeshes[i].firstVertex;
-                mysub.Indices = new AttributeIndex();
+                //mysub.Indices = new AttributeIndex();
 
                 var end = firstFace + numFaces;
                 for (int f = firstFace; f < end; f++)

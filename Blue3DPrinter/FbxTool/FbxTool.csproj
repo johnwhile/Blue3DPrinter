@@ -64,11 +64,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\commonlib\Common.csproj">
+    <ProjectReference Include="..\..\..\CommonLib\Common.csproj">
       <Project>{7e655b04-5914-4f26-9947-81c20b41f049}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\johnw\Projects\FbxWrapper\FbxSdkWrapper\FbxSdkWrapper.vcxproj">
+    <ProjectReference Include="..\..\..\FbxWrapper\FbxSdkWrapper\FbxSdkWrapper.vcxproj">
       <Project>{46228303-44c3-47ad-830d-9702b09f97b1}</Project>
       <Name>FbxSdkWrapper</Name>
       <Private>True</Private>

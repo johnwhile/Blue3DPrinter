@@ -28,17 +28,19 @@ namespace FbxTool
         static FbxImporter()
         {
             // node that preclude the insertion of the whole hierarchy
-            skipEmpyrionFbxNodeName = new HashSet<string>(10);
-            skipEmpyrionFbxNodeName.Add("LOD0_D1");
-            skipEmpyrionFbxNodeName.Add("LOD0_D2");
-            skipEmpyrionFbxNodeName.Add("LOD0_D3");
-            skipEmpyrionFbxNodeName.Add("MeshShadow");
-            skipEmpyrionFbxNodeName.Add("Collider");
-            skipEmpyrionFbxNodeName.Add("SymType_1");
-            skipEmpyrionFbxNodeName.Add("SymType_2");
-            skipEmpyrionFbxNodeName.Add("D1");
-            skipEmpyrionFbxNodeName.Add("D2");
-            skipEmpyrionFbxNodeName.Add("D3");
+            skipEmpyrionFbxNodeName = new HashSet<string>(10)
+            {
+                "LOD0_D1",
+                "LOD0_D2",
+                "LOD0_D3",
+                "MeshShadow",
+                "Collider",
+                "SymType_1",
+                "SymType_2",
+                "D1",
+                "D2",
+                "D3"
+            };
         }
 
         static bool recursiveWalker(FBXNode fbxnode, SceneNode node)
@@ -111,13 +113,13 @@ namespace FbxTool
 
                 if (!recursiveWalker(fbxRoot, scene.Root))
                 {
-                    Debugg.Print("FbxImporter : FAIL TO READ HIERARCHY", DebugInfo.Error);
+                    Debugg.Error("FbxImporter : FAIL TO READ HIERARCHY");
                     return null;
                 }
             }
             catch (Exception e)
             {
-                Debugg.Print("FbxImporter : " + e.Message, DebugInfo.Error);
+                Debugg.Error("FbxImporter : " + e.Message);
                 scene = null;
             }
             skip = null;
@@ -153,7 +155,7 @@ namespace FbxTool
             }
             catch (Exception e)
             {
-                Debugg.Print("FbxImporter : " + e.Message, DebugInfo.Error);
+                Debugg.Error("FbxImporter : " + e.Message);
                 return false;
             }
             return true;
@@ -212,7 +214,7 @@ namespace FbxTool
             return str.ToString();
         }
 
-        static Mesh convert(FBXMesh fbxmesh)
+        static TriMesh convert(FBXMesh fbxmesh)
         {
 
             if (!fbxmesh.Triangulated)
@@ -221,7 +223,7 @@ namespace FbxTool
                 return null;
             }
 
-            Mesh mesh = new Mesh();
+            var mesh = new TriMesh();
 
             int vcount = fbxmesh.ControlPointsCount;
             mesh.Vertices = new StructBuffer<Vector3f>(vcount);

@@ -5,13 +5,13 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blue3DPrinter", "Blue3DPrinter\Blue3DPrinter.csproj", "{BF98C8D9-7887-41C4-9F49-6D1A29FE8D7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCode", "Test\TestCode.csproj", "{C5C61BC2-8B65-4B26-98AC-0236572E7491}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{C5C61BC2-8B65-4B26-98AC-0236572E7491}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FbxSdkWrapper", "..\FbxWrapper\FbxSdkWrapper\FbxSdkWrapper.vcxproj", "{46228303-44C3-47AD-830D-9702B09F97B1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FbxSdkWrapper", "..\..\FbxWrapper\FbxSdkWrapper\FbxSdkWrapper.vcxproj", "{46228303-44C3-47AD-830D-9702B09F97B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AssetTool", "AssetTool", "{81A1200C-31FF-4769-9269-B0F0195F714D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\CommonLib\Common.csproj", "{7E655B04-5914-4F26-9947-81C20B41F049}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\..\CommonLib\Common.csproj", "{7E655B04-5914-4F26-9947-81C20B41F049}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetStudio", "Blue3DPrinter\AssetTool\AssetStudio\AssetStudio.csproj", "{43211301-B569-4C80-9206-F2B3D9E15063}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FbxTool", "Blue3DPrinter\Fb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityTool", "UnityTool\UnityTool.csproj", "{1E33FE65-20F1-4E98-9CDA-2D2DEA624136}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common.Clr", "..\CommonLib\Common.Clr\Common.Clr.vcxproj", "{0E3B0DE1-D50F-40E6-8AE7-01249C216C0F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common.Clr", "..\..\CommonLib\Common.Clr\Common.Clr.vcxproj", "{0E3B0DE1-D50F-40E6-8AE7-01249C216C0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

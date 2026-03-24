@@ -70,7 +70,7 @@ namespace UnityTool
 
             // Read Types
             assetTypes = new AssetType[reader.ReadInt32()];
-            Debugg.Print($"Serialized assetTypes : {assetTypes.Length}");
+            Debugg.Info($"Serialized assetTypes : {assetTypes.Length}");
 
             for (int i = 0; i < assetTypes.Length; i++)
                 assetTypes[i] = new AssetType(reader, enableTree, false);
@@ -80,7 +80,7 @@ namespace UnityTool
 
             // Read Objects
             objectinfos = new ObjectInfo[reader.ReadInt32()];
-            Debugg.Print($"Objects : {objectinfos.Length}");
+            Debugg.Info($"Objects : {objectinfos.Length}");
 
             preLoaded = new ObjectBase[objectinfos.Length];
 
@@ -120,9 +120,9 @@ namespace UnityTool
 
             if (externals.Length>0)
             {
-                Debugg.Print("require to load external files:");
+                Debugg.Info("require to load external files:");
                 foreach (var external in externals)
-                    Debugg.Print($"- {Path.GetFileName(external.pathName)}");
+                    Debugg.Info($"- {Path.GetFileName(external.pathName)}");
             }
             
 

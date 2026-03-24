@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Common;
+using Common.Maths;
+using Common.Tools;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-
-using Common;
-using Common.Maths;
-using CommonMesh = Common.Maths.Mesh;
 using static Common.Maths.Mesh;
+using static ICSharpCode.SharpZipLib.Zip.ExtendedUnixData;
 
-using Common.Tools;
 
 namespace UnityTool
 {
@@ -35,24 +34,27 @@ namespace UnityTool
 
         static EmpyrionModel()
         {
-            skipfilter = new HashSet<string>(10);
-            nodefilter = new HashSet<string>(2);
-
             // node that preclude the insertion of the whole hierarchy
-            skipfilter.Add("LOD0_D1");
-            skipfilter.Add("LOD0_D2");
-            skipfilter.Add("LOD0_D3");
-            skipfilter.Add("MeshShadow");
-            skipfilter.Add("Collider");
-            skipfilter.Add("SymType_1");
-            skipfilter.Add("SymType_2");
-            skipfilter.Add("D1");
-            skipfilter.Add("D2");
-            skipfilter.Add("D3");
+            skipfilter = new HashSet<string>(10)
+            {
+                "LOD0_D1",
+                "LOD0_D2",
+                "LOD0_D3",
+                "MeshShadow",
+                "Collider",
+                "SymType_1",
+                "SymType_2",
+                "D1",
+                "D2",
+                "D3"
+            };
 
             // node that contain the necessary geometry
-            nodefilter.Add("LOD0"); //contain cardinal's mesh, require a name parser
-            nodefilter.Add("Mesh"); //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            nodefilter = new HashSet<string>(2)
+            {
+                "LOD0", //contain cardinal's mesh, require a name parser
+                "Mesh" //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            };
         }
 
         //can be omitted but it's possible to avoid to read more time the same asset
@@ -79,7 +81,7 @@ namespace UnityTool
 
             for (int i = 0; i < Tree.ElementsCount; i++)
             {
-                if (Tree.Element[i] is CommonMesh mesh)
+                if (Tree.Element[i] is TriMesh mesh)
                 {
                     //var submesh = mesh.CollapseSubMeshes();
                     //if (submesh != null) submesh.Name = mesh.Name;
@@ -194,10 +196,12 @@ namespace UnityTool
                 //read only mesh classes
                 if (reader.ReadBoolean())
                 {
-                    (long meshsignature, long meshsize) = ReadHeader(reader);
+                    (long meshsignature, long meshsize) = ReadHeaderAndBack(reader);
                     if (meshsignature != BaseSignature) throw new Exception("Can't read unknow elements, must be a mesh");
 
-                    Tree.Element[i] = new CommonMesh(reader);
+                    var tmesh = new TriMesh();
+                    tmesh.Read(reader);
+                    Tree.Element[i] = tmesh;
                 }
                 else
                 {
@@ -220,12 +224,13 @@ namespace UnityTool
             for (int i = 0; i < Tree.ElementsCount; i++)
             {
                 //write only mesh classes
-                if (Tree.Element[i] is CommonMesh mesh)
+                if (Tree.Element[i] is TriMesh mesh)
                 {
                     writer.Write(true);
-                    var flag = matversion == TransformVersion.Decomposed ? Compression.MatrixTRS : Compression.None;
-                    flag |= Compression.PackedNormals24;
-                    mesh.Write(writer, flag);
+                    //var flag = matversion == TransformVersion.Decomposed ? Compression.MatrixTRS : Compression.None;
+                    //flag |= Compression.PackedNormals24;
+                    //mesh.Write(writer, flag);
+                    mesh.Write(writer, CompressionTransform.MatrixTRS, CompressionIndices.None, CompressionVertices.None, CompressionNormals.Normals24, CompressionTexCoord.None, CompressionColor.None);
                 }
                 else
                 {
@@ -257,10 +262,11 @@ namespace UnityTool
 
             for (int i = 0; i < Tree.ElementsCount; i++)
             {
-                if (Tree.Element[i] is CommonMesh mesh)
+                if (Tree.Element[i] is TriMesh mesh)
                 {
-                    var flag = matversion == TransformVersion.Decomposed ? Compression.MatrixTRS : Compression.None;
-                    mesh.Write(writer, flag);
+                    //var flag = matversion == TransformVersion.Decomposed ? Compression.MatrixTRS : Compression.None;
+                    //mesh.Write(writer, flag);
+                    mesh.Write(writer);
                 }
             }
             writer.WriteEndElement(); // end of "Elements"

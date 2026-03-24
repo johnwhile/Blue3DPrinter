@@ -183,17 +183,17 @@ namespace Blue3DPrinter
             if (scene == null) return null;
 
             //degenerate all submeshes and nodes to one mesh
-            Mesh bigone = new Mesh(Primitive.TriangleList, scene.Name);
+            var bigone = new TriMesh(Primitive.TriangleList, scene.Name);
 
             //need to change the scene.root.treehierarchy sequence...
-            if (scene.Root.Element is Mesh mesh1)
+            if (scene.Root.Element is TriMesh mesh1)
             {
                 bigone.Merge(mesh1);
             }
 
             foreach (var node in scene.Root.TreeHierarchy)
             {
-                if (node.Element is Mesh mesh2)
+                if (node.Element is TriMesh mesh2)
                 {
                     bigone.Merge(mesh2);
                 }

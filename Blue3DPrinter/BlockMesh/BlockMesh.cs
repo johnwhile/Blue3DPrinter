@@ -4,16 +4,15 @@ using System.Diagnostics;
 
 using Common;
 using Common.Maths;
-
 using Common.IO.Wavefront;
-using Common.Tools;
+
 
 namespace Blue3DPrinter
 {
     /// <summary>
     /// SubMeshes rappresent the 6 possible surface that lies on cube's sides + 1 for generics
     /// </summary>
-    public class BlockMesh : Mesh
+    public class BlockMesh : TriMesh
     {
         static Matrix4x4f[] projectToPlane;
 
@@ -80,7 +79,7 @@ namespace Blue3DPrinter
         /// <summary>
         /// Add a new geometry and sort triangles by its direction and by material
         /// </summary>
-        public bool AddBlockMesh(Mesh mesh, Cardinal material, Hide removable, bool sort = true, bool collapse = false)
+        public bool AddBlockMesh(TriMesh mesh, Cardinal material, Hide removable, bool sort = true, bool collapse = false)
         {
             if (collapse) return AddBlockMeshCollapse(mesh);
             
@@ -167,7 +166,7 @@ namespace Blue3DPrinter
 
 
 
-        bool AddBlockMeshCollapse(Mesh mesh)
+        bool AddBlockMeshCollapse(TriMesh mesh)
         {
             int vertexOffset = Vertices.Count;
 
@@ -429,10 +428,12 @@ namespace Blue3DPrinter
 
             BlockMesh mesh = new BlockMesh(Name);
             mesh.Name = Name;
-            mesh.SubMeshes = new List<SubMesh>(SubMeshes.Count);
-            for (int s = 0; s < SubMeshes.Count; s++) mesh.SubMeshes.Add(null);
             mesh.Transform = Transform;
             mesh.m_subMap = m_subMap;
+
+            //mesh.SubMeshes = new List<SubMesh>(SubMeshes.Count);
+            //for (int s = 0; s < SubMeshes.Count; s++) mesh.SubMeshes.Add(null);
+
 
 
             int[] vertexRemap = new int[VerticesCount];
@@ -444,11 +445,14 @@ namespace Blue3DPrinter
 
             for (int s = 0; s < SubMeshes.Count; s++)
             {
+               
                 var sub = SubMeshes[s];
                 if (sub == null || !sub.Enable) continue;
 
-                SubMesh newSub = new SubMesh(this, sub.IndincesCount / 3, IndexFormat.Index32bit, sub.Name);
-                mesh.SubMeshes[s] = newSub;
+                var newSub = mesh.AddSubMesh(sub.IndincesCount / 3, IndexFormat.Index32bit, sub.Name);
+
+                //SubMesh newSub = new SubMesh(this, sub.IndincesCount / 3, IndexFormat.Index32bit, sub.Name);
+                //mesh.SubMeshes[s] = newSub;
 
                 int numTriangles = 0;
 

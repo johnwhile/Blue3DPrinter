@@ -1,14 +1,13 @@
 ﻿// The loading asset using this library: https://github.com/nesrak1/AssetsTools.NET
 // although it's very fast, it is abandoned because of the absurdity of complexity.
 // AssetStudio allows you to read meshes "quite simply" but is slow
-using System;
+
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 
 using Common;
 using Common.Maths;
-using System.Diagnostics;
 using Common.Tools;
 
 namespace AssetStudio
@@ -93,22 +92,26 @@ namespace AssetStudio
         public BundleUtilities()
         {
             // node that preclude the insertion of the whole hierarchy
-            skipfilter = new HashSet<string>(10);
-            skipfilter.Add("LOD0_D1");
-            skipfilter.Add("LOD0_D2");
-            skipfilter.Add("LOD0_D3");
-            skipfilter.Add("MeshShadow");
-            skipfilter.Add("Collider");
-            skipfilter.Add("SymType_1");
-            skipfilter.Add("SymType_2");
-            skipfilter.Add("D1");
-            skipfilter.Add("D2");
-            skipfilter.Add("D3");
+            skipfilter = new HashSet<string>(10)
+            {
+                "LOD0_D1",
+                "LOD0_D2",
+                "LOD0_D3",
+                "MeshShadow",
+                "Collider",
+                "SymType_1",
+                "SymType_2",
+                "D1",
+                "D2",
+                "D3"
+            };
 
             // node that contain the necessary geometry
-            nodefilter = new HashSet<string>(2);
-            nodefilter.Add("LOD0"); //contain cardinal's mesh, require a name parser
-            nodefilter.Add("Mesh"); //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            nodefilter = new HashSet<string>(2)
+            {
+                "LOD0", //contain cardinal's mesh, require a name parser
+                "Mesh" //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            };
         }
 
 
@@ -279,9 +282,9 @@ namespace AssetStudio
                 }
         }
 
-        static Common.Maths.Mesh ConvertAssetToMesh(ImportedMesh imesh)
+        static TriMesh ConvertAssetToMesh(ImportedMesh imesh)
         {
-            Common.Maths.Mesh mesh = new Common.Maths.Mesh();
+            var mesh = new TriMesh();
 
             mesh.Vertices = new StructBuffer<Vector3f>(imesh.VertexList.Count);
 
@@ -323,9 +326,9 @@ namespace AssetStudio
         /// My version of <see cref="ConvertMeshRenderer"/>
         /// The coordinates system result in Directx-LH-Yup
         /// </summary>
-        static Common.Maths.Mesh ConvertAssetToMesh(Mesh AssMesh)
+        static TriMesh ConvertAssetToMesh(Mesh AssMesh)
         {
-            var mesh = new Common.Maths.Mesh();
+            var mesh = new TriMesh();
 
 
             int vcount = AssMesh.m_VertexCount;
