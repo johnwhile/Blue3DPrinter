@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+
 using static Common.Maths.Mesh;
-using static ICSharpCode.SharpZipLib.Zip.ExtendedUnixData;
 
 
 namespace UnityTool
@@ -17,11 +17,7 @@ namespace UnityTool
     /// </summary>
     public class EmpyrionModel
     {
-        readonly static long EMPMODEL = BitConverterExt.ToInt64("EMPMODEL");
-        /// <summary>
-        /// The signature define the class type, must be unique and it's used to stop reading if something wrong
-        /// </summary>
-        public virtual long Signature => EMPMODEL;
+        public readonly static long EmpSignature = BitConverterExt.ToInt64("EMPMODEL");
 
         public readonly SceneTree Tree;
 
@@ -187,7 +183,7 @@ namespace UnityTool
             long signature = reader.ReadInt64();
             long bytesize =  reader.ReadInt64();
 
-            if (signature != Signature) throw new Exception("Wrong header for Empyrion EmpyrionModel class");
+            if (signature != EmpSignature) throw new Exception("Wrong header for Empyrion EmpyrionModel class");
 
             if (!Tree.Read(reader)) return false;
 
@@ -197,10 +193,17 @@ namespace UnityTool
                 if (reader.ReadBoolean())
                 {
                     (long meshsignature, long meshsize) = ReadHeaderAndBack(reader);
-                    if (meshsignature != BaseSignature) throw new Exception("Can't read unknow elements, must be a mesh");
+                    if (meshsignature != TriMesh.TriMeshSignature &&
+                        meshsignature != Common.Maths.Mesh.MeshSignature)
+                        
+                        throw new Exception("Can't read unknow elements, must be a mesh");
 
                     var tmesh = new TriMesh();
+
                     tmesh.Read(reader);
+                    //tmesh.ReadOldVersion(reader);
+
+
                     Tree.Element[i] = tmesh;
                 }
                 else
@@ -215,7 +218,7 @@ namespace UnityTool
         public bool Write(BinaryWriter writer, TransformVersion matversion = TransformVersion.Float16)
         {
             long begin = writer.BaseStream.Position;
-            writer.WriteLong(Signature);
+            writer.WriteLong(EmpSignature);
             writer.WriteLong();
             //write the tree
             if (!Tree.Write(writer, matversion)) return false;

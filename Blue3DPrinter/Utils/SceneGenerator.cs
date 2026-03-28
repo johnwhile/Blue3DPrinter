@@ -100,6 +100,12 @@ namespace Blue3DPrinter
             int cursorRow = Console.CursorTop;
 
 
+            // this happen when console buffer is too small
+            if (cursorRow > Console.BufferHeight - 10)
+            {
+                cursorRow = 0;
+            }
+
             WavefrontObj fileobj = new WavefrontObj();
             Wavefront.NumberDecimalDigits = 4;
 
@@ -198,6 +204,7 @@ namespace Blue3DPrinter
                         //this block will be never revisited, it can be destroyed
                         block.HideMapInstance = null;
                     }
+
 
             Console.CursorTop = cursorRow + 1;
             Console.CursorLeft = 0;

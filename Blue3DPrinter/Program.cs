@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Maths;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -32,6 +33,9 @@ namespace Blue3DPrinter
         {
             //output message write also to console
             Debugg.ToConsole = true;
+
+
+            Vector3f.CHECK_ZEROLENGHT_WHEN_NORMALIZE = false;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

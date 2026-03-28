@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
-using Common;
-using Common.IO.Wavefront;
 using Common.Tools;
 
 namespace Blue3DPrinter
