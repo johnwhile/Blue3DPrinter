@@ -74,7 +74,7 @@ typedef struct
     
     switch (format)
     {
-        case 8:  byte   indices[count]; break;
+        case 8:  ubyte   indices[count]; break;
         case 16: ushort indices[count]; break;
         case 32: byte   use7BitEncoder;
                  uint   indices[count]; break;

@@ -31,6 +31,8 @@ namespace Blue3DPrinter
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.StorageExportButton = new System.Windows.Forms.Button();
             this.storageComboBox = new System.Windows.Forms.ComboBox();
@@ -43,17 +45,18 @@ namespace Blue3DPrinter
             this.blockNameLabel = new System.Windows.Forms.Label();
             this.DescriptionNameSearch = new System.Windows.Forms.TextBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.BtnConvertTreeMesh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "debugfbx2obj";
+            this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(150, 40);
             this.button1.TabIndex = 0;
             this.button1.Text = "Reload BlocksConfig.ecf";
@@ -61,6 +64,7 @@ namespace Blue3DPrinter
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.fbxfilenameLabel);
@@ -77,6 +81,26 @@ namespace Blue3DPrinter
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(271, 601);
             this.panel1.TabIndex = 1;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Location = new System.Drawing.Point(15, 346);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(234, 60);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Fbx Wrapper";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(8, 28);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(221, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Convert Fbx To Obj";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.ConvertFbxToObj_Click);
             // 
             // groupBox1
             // 
@@ -187,27 +211,27 @@ namespace Blue3DPrinter
             this.treeView1.Size = new System.Drawing.Size(646, 601);
             this.treeView1.TabIndex = 2;
             // 
-            // groupBox2
+            // groupBox3
             // 
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Location = new System.Drawing.Point(15, 281);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(234, 60);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Fbx Wrapper";
+            this.groupBox3.Controls.Add(this.BtnConvertTreeMesh);
+            this.groupBox3.Location = new System.Drawing.Point(16, 280);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(234, 60);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "My TreeMesh data storage";
             // 
-            // button3
+            // button4
             // 
-            this.button3.Location = new System.Drawing.Point(8, 28);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(221, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Convert Fbx To Obj";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.ConvertFbxToObj_Click);
+            this.BtnConvertTreeMesh.Location = new System.Drawing.Point(8, 28);
+            this.BtnConvertTreeMesh.Name = "BtnConvertTreeMesh";
+            this.BtnConvertTreeMesh.Size = new System.Drawing.Size(221, 23);
+            this.BtnConvertTreeMesh.TabIndex = 1;
+            this.BtnConvertTreeMesh.Text = "Convert Treemesh To Obj";
+            this.BtnConvertTreeMesh.UseVisualStyleBackColor = true;
+            this.BtnConvertTreeMesh.Click += new System.EventHandler(this.BtnConvertTreeMesh_Click);
             // 
-            // ShapeDebuggerForm
+            // Blue3DDebuggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -218,8 +242,9 @@ namespace Blue3DPrinter
             this.Text = "ShapeDebugger";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -242,5 +267,7 @@ namespace Blue3DPrinter
         private System.Windows.Forms.ComboBox storageComboBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button BtnConvertTreeMesh;
     }
 }

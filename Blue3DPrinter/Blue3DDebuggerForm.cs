@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Common.Tools;
+using System;
+using System.IO;
 using System.Windows.Forms;
-
-using Common.Tools;
+using UnityTool;
 
 namespace Blue3DPrinter
 {
@@ -113,7 +114,6 @@ namespace Blue3DPrinter
             BlockIdSearch.Update();
             fbxfilenameLabel.Update();
         }
-
         private void CreateShapeObj_Click(object sender, EventArgs e)
         {
             if (description != null)
@@ -125,74 +125,43 @@ namespace Blue3DPrinter
                 string shapename = description.GetFilenameAsset(childindex);
                 Console.WriteLine("> read file " + shapename);
 
-                if (shapename != null)
-                {
-                    //var storage = main.resourceManager.GetMyFileStorageManager();
-                    //if (storage.OpenAndLoad())
-                    if (ModelResourceManager.TryGetModel(shapename, out SceneTree scene))
-                    {
-                        //var file = storage.GetFile(shapename);
-                        //if (file is SceneFile scene && scene.TotalObjects > 0)
-                        if (scene.ElementsCount > 0)
-                        {
-                            LogMsg.Warning("> export file " + scene.Name);
-
-                            BlockModel model = new BlockModel(scene, description, shapename);
-
-                            model.Mesh.InitializeWavefontFile(out var objfile, out var matfile);
-
-                            //WavefrontExporter.WriteToWavefront(wave, model.Mesh);
-
-                            WavefrontExporter.WriteToWavefront_Separate(objfile, matfile, model.Mesh, null, true);
-
-                            string filename = shapename;
-
-                            //string filename = Path.Combine(Path.GetDirectoryName(storage.FilePath), shapename + ".obj");
-                            LogMsg.Message("> Save wavefront mat " + filename);
-                            matfile.Save(filename);
-
-                            LogMsg.Message("> Save wavefront obj " + filename);
-                            objfile.Save(filename);
-                        }
-                        else
-                        {
-                            LogMsg.Message("Empty file", ConsoleColor.Red);
-                        }
-                    }
-                    //storage.Close();
-                }
+                ExportModelToWavefont(shapename);
             }
         }
-
         private void StorageExportButton_Click(object sender, EventArgs e)
         {
-            /*
-            string name = storageComboBox.SelectedItem.ToString();
+            ExportModelToWavefont(storageComboBox.SelectedItem.ToString());
+        }
+        private void ExportModelToWavefont(string shapename)
+        {
+            if (string.IsNullOrEmpty(shapename)) return;
 
-            var storage = main.resourceManager.GetMyFileStorageManager();
-
-            if (storage.OpenAndLoad())
+            if (ModelResourceManager.TryGetModel(shapename, out SceneTree scene))
             {
-                var file = storage.GetFile(name);
-
-                if (file is SceneFile scene && scene.TotalObjects > 0)
+                if (scene.ElementsCount > 0)
                 {
-                    LogMsg.Warning("> export file " + scene.Name);
+                    LogMsg.Message("> Export file " + scene.Name);
 
-                    BlockModel model = new BlockModel(scene, null, name);
-                    Mesh mesh = model.Mesh;
-                    WaveFileObj wave = mesh.ConvertToWavefront();
-                    string filename = Path.Combine(Path.GetDirectoryName(storage.FilePath), name + ".obj");
-                    LogMsg.Message("> Save file " + filename);
-                    wave.Save(filename);
+                    BlockModel model = new BlockModel(scene, description, shapename);
+
+                    model.Mesh.InitializeWavefontFile(out var objfile, out var matfile);
+                    WavefrontExporter.WriteToWavefront_Separate(objfile, matfile, model.Mesh, null, true);
+
+                    string filename = shapename;
+
+                    LogMsg.Message("> Save wavefront mat " + filename);
+                    matfile.Save(filename);
+
+                    LogMsg.Message("> Save wavefront obj " + filename);
+                    objfile.Save(filename);
+
+                    LogMsg.Success("done");
                 }
                 else
                 {
-                    LogMsg.Message("Empty file", ConsoleColor.Red);
+                    LogMsg.Error("Empty file");
                 }
             }
-            storage.Close();
-            */
         }
 
         private void ConvertFbxToObj_Click(object sender, EventArgs e)
@@ -229,5 +198,60 @@ namespace Blue3DPrinter
                 }
             }*/
         }
+
+        private void BtnConvertTreeMesh_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openDialog = new OpenFileDialog())
+            {
+                //openDialog.InitialDirectory = @"";
+                openDialog.Filter = "My TreeMesh data structure (*.treemesh)|*.treemesh";
+                openDialog.RestoreDirectory = true;
+
+                if (openDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string folder = Path.GetDirectoryName(openDialog.FileName);
+                    string filename = Path.GetFileNameWithoutExtension(openDialog.FileName);
+                    string extension = Path.GetExtension(openDialog.FileName);
+
+                    SceneTree scene = null;
+
+                    using (FileStream file = File.OpenRead(openDialog.FileName))
+                    using (BinaryReader reader = new BinaryReader(file))
+                    {
+                        LogMsg.Message("> reading file");
+                        var empyrion = new EmpyrionModel();
+                        if (!empyrion.Read(reader))
+                        {
+                            LogMsg.Error($"> error reading {filename}.{extension}");
+                            return;
+                        }
+                        scene = empyrion.Tree;
+
+                    }
+                    LogMsg.Message("> converting file");
+//                    using (FileStream file = File.OpenWrite(filename))
+
+                   BlockModel model = new BlockModel(scene, null, filename);
+
+                    model.Mesh.InitializeWavefontFile(out var objfile, out var matfile);
+                    WavefrontExporter.WriteToWavefront_Merge(objfile, matfile, model.Mesh);
+
+
+                    LogMsg.Message("> Save wavefront mat " + filename);
+                    matfile.Save(Path.Combine(folder, filename));
+
+                    LogMsg.Message("> Save wavefront obj " + filename);
+                    objfile.Save(Path.Combine(folder, filename));
+
+                    LogMsg.Success("done");
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+
     }
 }

@@ -14,7 +14,7 @@
 #define SCENETREE_BT
 
 #ifndef MESH_BT
-    #include "include_mesh.bt"
+    #include "include_mesh_old.bt"
 #endif
 
 

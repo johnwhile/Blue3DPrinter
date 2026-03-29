@@ -21,7 +21,7 @@ namespace Blue3DPrinter
         {
             InitializeComponent();
 
-            Text = "Blue3DPrinter v1.11";
+            Text = "Blue3DPrinter v1.12";
 
             voxelizerControl.main = this;
             converterControl.main = this;

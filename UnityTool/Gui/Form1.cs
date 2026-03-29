@@ -10,7 +10,7 @@ using Common.Maths;
 
 using UnityTool;
 
-using TriMesh = Common.Maths.Mesh;
+using TriMesh = Common.Maths.TriMesh;
 
 namespace Gui
 {
@@ -36,7 +36,7 @@ namespace Gui
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                Debugg.Print($"open {dialog.FileName}");
+                Debugg.Info($"open {dialog.FileName}");
 
                 string filename = Path.GetFullPath(dialog.FileName);
                 string directory = Path.GetDirectoryName(filename);
@@ -63,7 +63,7 @@ namespace Gui
 
             if (dialog.ShowDialog() != DialogResult.OK) return;
 
-            Debugg.Print($"open {dialog.FileName}");
+            Debugg.Info($"open {dialog.FileName}");
 
             string filename = Path.GetFullPath(dialog.FileName);
             string directory = Path.GetDirectoryName(filename);
@@ -176,7 +176,7 @@ namespace Gui
 
             if (dialog.ShowDialog() != DialogResult.OK) return;
 
-            Debugg.Print($"open {dialog.FileName}");
+            Debugg.Info($"open {dialog.FileName}");
 
             using (var file = File.OpenRead(dialog.FileName))
             {

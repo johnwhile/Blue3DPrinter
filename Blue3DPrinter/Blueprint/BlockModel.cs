@@ -45,24 +45,28 @@ namespace Blue3DPrinter
             ////// this filtering is already done partially when the file storage was generated to reduce its size
 
             // node that preclude the insertion of the whole hierarchy
-            skip = new HashSet<string>();
-            skip.Add("LOD0_D1"); //lod0 - first damage 
-            skip.Add("LOD0_D2"); //lod0 - second damage 
-            skip.Add("LOD0_D3"); //lod0 - third damage 
-            skip.Add("MeshShadow"); //mesh to generate shadow in game
-            skip.Add("Collider"); // for collision calculations
-            skip.Add("Collider1");
-            skip.Add("Connector"); //landing gear dummy
-            skip.Add("SymType_1");
-            skip.Add("SymType_2");
-            skip.Add("D1"); //lod0 - first damage 
-            skip.Add("D2");
-            skip.Add("D3");
+            skip = new HashSet<string>
+            {
+                "LOD0_D1", //lod0 - first damage 
+                "LOD0_D2", //lod0 - second damage 
+                "LOD0_D3", //lod0 - third damage 
+                "MeshShadow", //mesh to generate shadow in game
+                "Collider", // for collision calculations
+                "Collider1",
+                "Connector", //landing gear dummy
+                "SymType_1",
+                "SymType_2",
+                "D1", //lod0 - first damage 
+                "D2",
+                "D3"
+            };
 
             // node that contain the necessary geometry in custom structure
-            filter = new HashSet<string>();
-            filter.Add("LOD0"); //contain cardinal's mesh, require a name parser
-            filter.Add("Mesh"); //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            filter = new HashSet<string>
+            {
+                "LOD0", //contain cardinal's mesh, require a name parser
+                "Mesh" //contain mesh or node "D0" "D1" "D2" "D3", take only D0 and possibly all the children if exist
+            };
         }
 
         BlockDescription description;
