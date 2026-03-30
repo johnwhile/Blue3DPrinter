@@ -51,6 +51,7 @@ namespace Gui
                         Debugg.Info($"Exported resource : {res}");
                     }
                 }
+                Debugg.Success("done");
 
             }
         }

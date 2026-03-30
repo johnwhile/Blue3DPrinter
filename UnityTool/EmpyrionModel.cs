@@ -195,11 +195,9 @@ namespace UnityTool
                     (long meshsignature, long meshsize) = ReadHeaderAndBack(reader);
                     if (meshsignature != TriMesh.TriMeshSignature &&
                         meshsignature != Common.Maths.Mesh.MeshSignature)
-                        
                         throw new Exception("Can't read unknow elements, must be a mesh");
 
                     var tmesh = new TriMesh();
-
                     tmesh.Read(reader);
                     //tmesh.ReadOldVersion(reader);
 

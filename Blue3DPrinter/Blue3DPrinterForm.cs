@@ -1,9 +1,8 @@
 ﻿
+using Common;
 using System;
 using System.IO;
 using System.Windows.Forms;
-
-using Common;
 
 namespace Blue3DPrinter
 {
@@ -12,7 +11,6 @@ namespace Blue3DPrinter
         internal Blue3DDebuggerForm shapeDebugger;
         internal SettingForm setting;
         internal BlocksConfig config;
-        //internal ModelResourceManager resourceManager;
 
         Blueprint blueprint;
 
@@ -36,7 +34,7 @@ namespace Blue3DPrinter
         private void Blue3DPrinterForm_Load(object sender, EventArgs e)
         {
             // check and load the BlockConfig.ecf file
-            string blockConfigFilename = Path.Combine(Blue3DPrinter.Default.GameDirectory, Program.BlockConfigPath);
+            string blockConfigFilename = Path.Combine(AppSetting.GameDirectory, AppSetting.BlockConfigPath);
             if (!File.Exists(blockConfigFilename)) blockConfigFilename = "BlocksConfig.ecf";
 
             if (!File.Exists(blockConfigFilename))

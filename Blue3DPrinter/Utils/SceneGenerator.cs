@@ -198,9 +198,9 @@ namespace Blue3DPrinter
                             // shared between other visible triangles
                             block.HideMapInstance.verticesMap = null;
                         }
-
+                        
                         WavefrontExporter.WriteToWavefront(fileobj, material, block, mergeblock);
-
+                        
                         //this block will be never revisited, it can be destroyed
                         block.HideMapInstance = null;
                     }

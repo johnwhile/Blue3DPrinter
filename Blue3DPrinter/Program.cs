@@ -1,29 +1,75 @@
 ﻿using Common;
 using Common.Maths;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Blue3DPrinter
 {
-    public static class Program
+    public static class AppSetting
     {
-
-        /// <summary>
-        /// path of BlockConfig.ecf
-        /// </summary>
+        public static string GameDirectory = @"E:\SteamLibrary\steamapps\common\Empyrion - Galactic Survival";
         public static string BlockConfigPath = @"Content\Configuration\BlocksConfig.ecf";
         public static string BundlesSubDirectory = @"Content\Bundles";
+        public static List<string> BundlesFiles = new List<string> { "shapes", "models" };
+        public static int FileVersion = 31;
 
-        /// <summary>
-        /// List of all Bundles files
-        /// </summary>
-        public static string[] BundlesFiles = new string[] 
+        static AppSetting()
         {
-            "shapes",
-            "models", 
-            //"models2",
-        };
+            string filename = "Setting.ini";
+
+            if (File.Exists(filename))
+            {
+                using (var reader = XmlReader.Create(filename))
+                {
+                    while (reader.Read())
+                    {
+                        switch (reader.Name)
+                        {
+                            case "GameDirectory": GameDirectory = reader.ReadElementContentAsString(); 
+                                break;
+                            case "BlockConfigPath": BlockConfigPath = reader.ReadElementContentAsString();
+                                break;
+                            case "BundlesSubDirectory": BundlesSubDirectory = reader.ReadElementContentAsString(); 
+                                break;
+                            case "FileVersion": FileVersion = reader.ReadElementContentAsInt();
+                                break; 
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Save(filename);
+            }
+        }
+
+        public static void Save(string filename = "Setting.ini")
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.OmitXmlDeclaration = true;
+            settings.NewLineOnAttributes = true;
+
+            using (var writer = XmlWriter.Create(filename, settings))
+            {
+                writer.WriteComment("Application setting XML format");
+                writer.WriteStartElement("Setting");
+                writer.WriteElementString("GameDirectory", GameDirectory);
+                writer.WriteElementString("BlockConfigPath", BlockConfigPath);
+                writer.WriteElementString("BundlesSubDirectory", BundlesSubDirectory);
+                writer.WriteElementString("FileVersion", FileVersion.ToString());
+                writer.WriteEndElement();
+                writer.Flush();
+            }
+        }
+    }
+
+
+    public static class Program
+    {
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -40,6 +86,8 @@ namespace Blue3DPrinter
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Blue3DPrinterForm());
+
+                AppSetting.Save();
         }
     }
 }

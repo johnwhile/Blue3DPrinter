@@ -19,8 +19,8 @@ namespace Blue3DPrinter
         {
             this.main = main;
             InitializeComponent();
-            textBoxGameDirectory.Text = Blue3DPrinter.Default.GameDirectory;
-            textBoxFileVersion.Text = Blue3DPrinter.Default.FileVersion.ToString();
+            textBoxGameDirectory.Text = AppSetting.GameDirectory;
+            textBoxFileVersion.Text = AppSetting.FileVersion.ToString();
 
             toolTipFileVersion.AutomaticDelay = 0;
             toolTipFileVersion.InitialDelay = 0;
@@ -42,13 +42,13 @@ namespace Blue3DPrinter
                 //remove ding
                 e.Handled = true;
 
-                if (File.Exists(textBoxGameDirectory.Text + Program.BlockConfigPath))
+                if (File.Exists(textBoxGameDirectory.Text + AppSetting.BlockConfigPath))
                 {
-                    Blue3DPrinter.Default.GameDirectory = textBoxGameDirectory.Text;
+                    AppSetting.GameDirectory = textBoxGameDirectory.Text;
                 }
                 else
                 {
-                    MessageBox.Show(this, "the directory not containt the file :\n\n" + textBoxGameDirectory.Text + Program.BlockConfigPath, "warning");
+                    MessageBox.Show(this, "the directory not containt the file :\n\n" + textBoxGameDirectory.Text + AppSetting.BlockConfigPath, "warning");
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace Blue3DPrinter
 
                 int version;
                 if (!int.TryParse(textBoxFileVersion.Text, out version)) version = 31;
-                Blue3DPrinter.Default.FileVersion = version;
+                AppSetting.FileVersion = version;
 
             }
         }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-
-using Common;
+﻿using Blue3DPrinter.other;
 using Common.Maths;
-
-using Blue3DPrinter.other;
+using System;
+using System.IO;
 
 namespace Blue3DPrinter
 {
@@ -51,7 +48,7 @@ namespace Blue3DPrinter
             BlockMap = new BlockMapping(0);
             BlockGroupInfo = new BlockGrouping();
 
-            Version = (BlueprintVersion)Blue3DPrinter.Default.FileVersion;
+            Version = (BlueprintVersion)AppSetting.FileVersion;
         }
 
         public bool Write(BinaryWriter bw)

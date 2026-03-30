@@ -118,11 +118,6 @@
     <Compile Include="Blueprint\BlockMapping.cs" />
     <Compile Include="Blueprint\BlockStatistics.cs" />
     <Compile Include="Blueprint\BlueprintMesh.cs" />
-    <Compile Include="Blue3DPrinter.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Blue3DPrinter.settings</DependentUpon>
-    </Compile>
     <Compile Include="Blue3DPrinterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,16 +186,12 @@
     <EmbeddedResource Include="Controls\VoxelizerControl.resx">
       <DependentUpon>VoxelizerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="BlocksConfig.ecf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Blue3DPrinter.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Blue3DPrinter.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Setting.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="Shapes.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
