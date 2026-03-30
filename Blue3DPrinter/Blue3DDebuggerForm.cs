@@ -21,7 +21,7 @@ namespace Blue3DPrinter
             //var storage = main.resourceManager.GetMyFileStorageManager();
             storageComboBox.Items.Clear();
 
-            if (ModelResourceManager.Open("Shapes.zip"))
+            if (ModelResourceManager.Open())
             //if (storage.OpenAndLoad())
             {
                 //foreach (var file in storage.Indexer.FileFilenames)

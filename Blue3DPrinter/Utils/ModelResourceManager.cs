@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Common;
+using Common.Tools;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Collections.Generic;
-
-using Common;
-using Common.Tools;
 
 using UnityTool;
 
@@ -12,10 +11,9 @@ namespace Blue3DPrinter
 {
     public static class ModelResourceManager
     {
-        static ZipArchive archive;
+        static List<ZipArchive> archives;
 
         static HashSet<string> Exist = new HashSet<string>();
-
 
         static Dictionary<string, string> CaseSensitiveName = new Dictionary<string, string>();
 
@@ -40,48 +38,51 @@ namespace Blue3DPrinter
 
             if (!LoadedModels.TryGetValue(modelname, out model))
             {
-                if (archive==null) throw new Exception("Archive not loaded");
+                if (archives==null) throw new Exception("Archives not loaded");
                 if (!CaseSensitiveName.TryGetValue(modelname, out string filename)) throw new Exception("casesensitivename dictionary wrong");
 
-                var entry = archive.GetEntry(filename);
 
-                if (entry != null)
+                foreach (ZipArchive archive in archives)
                 {
-                    using (var stream = entry.Open())
-                    using (var memory = new MemoryStream())
+                    var entry = archive.GetEntry(filename);
+                    if (entry != null)
                     {
-                        stream.CopyTo(memory);
-                        memory.Position = 0;
-                        using (BinaryReader reader = new BinaryReader(memory))
+                        using (var stream = entry.Open())
+                        using (var memory = new MemoryStream())
                         {
-                            var empyrion = new EmpyrionModel();
-                            if (!empyrion.Read(reader)) return false;
-                            model = empyrion.Tree;
-                            LoadedModels.Add(modelname, model);
+                            stream.CopyTo(memory);
+                            memory.Position = 0;
+                            using (BinaryReader reader = new BinaryReader(memory))
+                            {
+                                var empyrion = new EmpyrionModel();
+                                if (empyrion.Read(reader))
+                                {
+                                    model = empyrion.Tree;
+                                    LoadedModels.Add(modelname, model);
+                                }
+                            }
                         }
+                        return true;
                     }
                 }
-                else
-                {
-                    Debugg.Error($"ZipArchive return null for file {filename}");
-                    return false;
-                }
+
+                Debugg.Error($"ZipArchive return null for file {filename}");
+                return false;
             }
             return true;
         }
 
-
-        public static bool Open(string filename = "Models.zip")
+        static ZipArchive OpenArchive(string filename)
         {
             if (!File.Exists(filename))
             {
                 Debugg.Error($"The Tool require the \"{filename}\" model's storage to get the blueprints meshes");
-                return false;
+                return null;
             }
-            Close();
-            archive = ZipFile.Open(filename, ZipArchiveMode.Read);
 
-            foreach(var entry in archive.Entries)
+            var archive = ZipFile.Open(filename, ZipArchiveMode.Read);
+
+            foreach (var entry in archive.Entries)
             {
                 string name = Path.GetFileNameWithoutExtension(entry.Name).ToLower();
 
@@ -91,13 +92,38 @@ namespace Blue3DPrinter
                     CaseSensitiveName.Add(name, entry.Name);
                 }
             }
+            return archive;
+        }
+
+
+        public static bool Open() 
+        { 
+            return Open("Models.zip", "Shapes.zip");
+        }
+
+        public static bool Open(params string[] filenames)
+        {
+            Close();
+            archives = new List<ZipArchive>();
+            foreach(var filename in filenames)
+            {
+                var archive = OpenArchive(filename);
+                if (archive == null)
+                {
+                    Close();
+                    return false;
+                }
+                archives.Add(archive);
+            }
             return true;
         }
 
         public static void Close()
         {
-            archive?.Dispose();
-            archive = null;
+            if (archives != null)
+                foreach (var archive in archives)
+                    archive?.Dispose();
+            archives = null;
         }
 
         public static void Clear()
