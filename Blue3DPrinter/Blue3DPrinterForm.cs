@@ -46,7 +46,7 @@ namespace Blue3DPrinter
             FbxTool.FbxImporter.Validate();
 
 
-            if (!ModelResourceManager.Open()) Debugg.Error("Shapes.zip not found");
+            if (!ModelResourceManager.Open("Models.zip")) Debugg.Error("Models.zip not found");
             /*
 
             // check if you have unpacked the game's bundles files first time

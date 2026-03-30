@@ -78,8 +78,13 @@ namespace Gui
 
                     foreach (var gameobj in objects)
                     {
-                        EmpyrionModel model = EmpyrionModel.FromAsset(gameobj, unityreader);
-                        models.Add(model);
+                        //HeavyWindowGInvPrefab
+                        //if (gameobj.Name == "HeavyWindowGInvPrefab")
+                        {
+                            EmpyrionModel model = EmpyrionModel.FromAsset(gameobj, unityreader);
+                            models.Add(model);
+                        }
+
                     }
                 }
                 else
@@ -181,17 +186,18 @@ namespace Gui
 
             using (var file = File.OpenRead(dialog.FileName))
             {
-                using (var reader =new  BinaryReader(file))
+                using (var reader = new BinaryReader(file))
                 {
                     EmpyrionModel model = new EmpyrionModel(reader);
-                    string path = Path.GetDirectoryName(dialog.FileName);
+                    string dir = Path.GetDirectoryName(dialog.FileName);
                     string filename = Path.GetFileNameWithoutExtension(dialog.FileName);
-                    filename = path + "\\" + filename + "_export";
+
+                    filename = Path.Combine( dir, filename) + "_export";
 
 
                     TriMesh bigone = TriMesh.MergeAllGeometries(model.Tree.GetElementCollection<TriMesh>());
                     var wave = bigone.ConvertToWavefront();
-                    wave.Save(@"C:\Users\johnw\Desktop\export");
+                    wave.Save(filename);
 
 
                     //TriMesh tmesh = TriMesh.MergeAllGeometries(geometries);

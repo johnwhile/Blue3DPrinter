@@ -28,14 +28,18 @@ namespace Blue3DPrinter
                     {
                         switch (reader.Name)
                         {
-                            case "GameDirectory": GameDirectory = reader.ReadElementContentAsString(); 
+                            case "GameDirectory":
+                                GameDirectory = reader.ReadElementContentAsString();
                                 break;
-                            case "BlockConfigPath": BlockConfigPath = reader.ReadElementContentAsString();
+                            case "BlockConfigPath":
+                                BlockConfigPath = reader.ReadElementContentAsString();
                                 break;
-                            case "BundlesSubDirectory": BundlesSubDirectory = reader.ReadElementContentAsString(); 
+                            case "BundlesSubDirectory":
+                                BundlesSubDirectory = reader.ReadElementContentAsString();
                                 break;
-                            case "FileVersion": FileVersion = reader.ReadElementContentAsInt();
-                                break; 
+                            case "FileVersion":
+                                FileVersion = reader.ReadElementContentAsInt();
+                                break;
                         }
                     }
                 }
@@ -87,7 +91,7 @@ namespace Blue3DPrinter
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Blue3DPrinterForm());
 
-                AppSetting.Save();
+            AppSetting.Save();
         }
     }
 }

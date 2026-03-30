@@ -71,11 +71,11 @@ namespace Blue3DPrinter
         }
 
 
-        public static bool Open(string filename = "Shapes.zip")
+        public static bool Open(string filename = "Models.zip")
         {
             if (!File.Exists(filename))
             {
-                Debugg.Error("The Tool require the \"Shapes.zip\" model's storage to get the blueprints meshes");
+                Debugg.Error($"The Tool require the \"{filename}\" model's storage to get the blueprints meshes");
                 return false;
             }
             Close();

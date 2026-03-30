@@ -37,9 +37,11 @@ namespace UnityTool
                 "LOD0_D2",
                 "LOD0_D3",
                 "MeshShadow",
+                "ColliderMesh",
                 "Collider",
                 "SymType_1",
                 "SymType_2",
+                "Far",
                 "D1",
                 "D2",
                 "D3"
@@ -167,6 +169,7 @@ namespace UnityTool
             if (transform == null) throw new ArgumentNullException("transform is null");
 
             var quat = transform.LocalRotation;
+            //quat.x *= -1;
             quat.y *= -1;
             quat.z *= -1;
 

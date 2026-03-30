@@ -6,6 +6,10 @@
 
 !/Blue3DPrinter/FbxTool/FbxSdk_vs2019_2020.2/*.dll
 !Shapes.zip
+!Models.zip
+
+# file too big
+Models2.zip
 
 
 # User-specific files
