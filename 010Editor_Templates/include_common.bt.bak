@@ -104,10 +104,10 @@ typedef struct {
 
 
 typedef struct {
-    ubyte r;
-    ubyte g;
-    ubyte b;
-    ubyte a;
+    byte r;
+    byte g;
+    byte b;
+    byte a;
 } COLOR;
 
 typedef struct {

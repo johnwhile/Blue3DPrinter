@@ -50,6 +50,11 @@ typedef enum <byte> {
 }
 COMPRESSION_C;
 
+typedef enum <byte> {
+    kNormals16_W16 = 1,
+    kNormals24_W16 = 2
+}
+COMPRESSION_TANG;
 
 
 typedef enum <byte> {
@@ -62,6 +67,12 @@ typedef enum <byte> {
 }
 PRIMITIVE;
 
+
+typedef struct 
+{
+    byte b[5];
+} 
+FIVEBYTES;
 
 
 typedef struct 
@@ -88,7 +99,11 @@ typedef struct
 
     int64 signature;
     int64 filesize;
-    uint  version;
+    
+    ubyte major;
+    ubyte minor;
+    ushort build;
+
     STRING name;
     PRIMITIVE topology;
     uint  diffuse;
@@ -167,7 +182,22 @@ typedef struct
     int tangentcount;
     if (tangentcount>0)
     {
-        FLOAT4 tangents[tangentcount];
+        local COMPRESSION_TANG compress_tang;
+        if (major>=2)
+        {
+            COMPRESSION_TANG compress_tang_tmp;
+            compress_tang = compress_tang_tmp;
+
+        }
+
+    
+        switch(compress_tang)
+        {
+            case kNormals16_W16: uint tangents[tangentcount]; break;
+            case kNormals24_W16: FIVEBYTES tangents[tangentcount]; break;
+            default: FLOAT4 tangents[tangentcount]; break;
+        }
+        
     }
 
     ///////////////////////////////////////////////////////
