@@ -18,7 +18,7 @@ namespace Blue3DPrinter
 
         static AppSetting()
         {
-            string filename = "Setting.ini";
+            string filename = "Config.xml";
 
             if (File.Exists(filename))
             {
@@ -50,7 +50,7 @@ namespace Blue3DPrinter
             }
         }
 
-        public static void Save(string filename = "Setting.ini")
+        public static void Save(string filename = "Config.xml")
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;

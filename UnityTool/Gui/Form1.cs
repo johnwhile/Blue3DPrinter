@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml;
 
 using Common;
 using Common.Tools;
@@ -10,7 +9,6 @@ using Common.Maths;
 
 using UnityTool;
 
-using TriMesh = Common.Maths.TriMesh;
 
 namespace Gui
 {

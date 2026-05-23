@@ -193,9 +193,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Models2.zip" />
-    <None Include="Setting.ini">
+    <Content Include="Config.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Shapes.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
